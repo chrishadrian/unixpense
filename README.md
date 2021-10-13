@@ -8,10 +8,10 @@ especially University Students, who want to keep track of their expenses and do 
 
 ## User Stories
 - As a user, I want to be able to add an expense to my expenses list.
-- As a user, I want to be able to view the list of expenses on my expenses list.
-- As a user, I want to be able to print the summary of my expenses list.
 - As a user, I want to be able to delete an expense from my expenses list.
-- As a user, I want to be able to see the sum amount of my expenses and have an option to view it based on the category.
+- As a user, I want to be able to see the sum amount of my expenses.
+- As a user, I want to be able to print the summary of categories-sorted expenses list.
+- AS a user, I want to be able to separate expenses list by month.
 
 #
 #
