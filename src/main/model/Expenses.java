@@ -6,7 +6,7 @@ import java.util.LinkedList;
 public class Expenses {
     private static LocalDate CURRENT_DATE = LocalDate.now();
     private LinkedList<Expense> expenses;
-
+    private LinkedList<Expense> archive = new LinkedList<>();
 
 
     public Expenses() {
@@ -30,7 +30,7 @@ public class Expenses {
     public int sumExpenses() {
         int sum = 0;
         for (Expense next : expenses) {
-            sum += next.amount;
+            sum += next.getAmount();
         }
         return sum;
     }
@@ -44,7 +44,8 @@ public class Expenses {
     // MODIFIES: this
     // EFFECTS: duplicate current Expenses to a new Expenses, reset current Expenses
     public void archiveExpenses() {
-
+        archive.addAll(expenses);
+        expenses.clear();
     }
 
     // EFFECTS: return expenses size

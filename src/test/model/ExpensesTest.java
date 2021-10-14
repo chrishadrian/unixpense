@@ -46,4 +46,10 @@ public class ExpensesTest {
         assertEquals(ex, exp.getExpense(0));
         assertEquals(ex2, exp.getExpense(2));
     }
+
+    @Test
+    public void archiveExpensesTest() {
+        exp.archiveExpenses();
+        assertEquals(0, exp.length());
+    }
 }
