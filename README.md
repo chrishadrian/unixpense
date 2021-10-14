@@ -14,5 +14,4 @@ especially University Students, who want to keep track of their expenses and do 
 - AS a user, I want to be able to separate expenses list by month.
 
 #
-#
 *CPSC 210 Project: Created by Christopher Wong.*

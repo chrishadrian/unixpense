@@ -71,35 +71,49 @@ public class Unixpense {
     // EFFECTS: conducts a deposit transaction
     private void doView() {
         String space = "        ";
-        System.out.println("Date" + space + space + "Category" + space + "Amount" + space + "Comment");
+
+        System.out.println("Date" + space + space + "Category" +  space + "  Amount" + space + "Comment");
         int sum = 0;
         for (int i = 0; i < exp.length(); i++) {
             Expense ex = exp.getExpense(i);
             sum = sum + ex.getAmount();
-            System.out.println(ex.getDate() + space + ex.getCategory() + space
-                    + ex.getAmount() + space + ex.getComment());
+
+            StringBuilder categorySpace = new StringBuilder();
+            int spaceDiff = 10 - ex.getCategory().length();
+            for (int j = 0; j < spaceDiff; j++) {
+                categorySpace.append(" ");
+            }
+
+            StringBuilder amountSpace = new StringBuilder();
+            int amountDiff = 5 - String.valueOf(ex.getAmount()).length();
+            for (int j = 0; j < amountDiff; j++) {
+                amountSpace.append(" ");
+            }
+
+            System.out.println(ex.getDate() + space + "  " + ex.getCategory() + categorySpace + space
+                    + ex.getAmount() + amountSpace + space +  ex.getComment());
         }
-        System.out.println("Sum of the month:" + space + sum);
+        System.out.println("Sum of the month: " + "                    " + sum);
     }
 
     private void doTrack() {
-        String command;
-        LocalDate date;
-        System.out.print("Do you want to use current date? (Y/N)");
+        LocalDate date = null;
 
-        command = input.next();
+        System.out.print("Do you want to use current date? (Y/N)");
+        String command = input.next();
         command = command.toLowerCase();
 
         if (command.equals("y")) {
             date = LocalDate.now();
-        } else {
-            System.out.println("Input your desired date:");
-            System.out.println("YYYY/MM/DD: ");
+        } else if (command.equals("n")) {
+            System.out.println("Input your desired date (YYYY/MM/DD):");
             String newDate = input.next();
             int year = Integer.parseInt(newDate.substring(0,4));
             int mon = Integer.parseInt(newDate.substring(5,7));
             int day = Integer.parseInt(newDate.substring(8,10));
             date = LocalDate.of(year, mon, day);
+        } else {
+            System.out.println("Selection not valid...");
         }
 
         System.out.println("Input the expense's category:");
@@ -108,12 +122,7 @@ public class Unixpense {
         int amount = Integer.parseInt(input.next());
         System.out.println("Input the expense's comment:");
         String comment = input.next();
+
         exp.addExpense(new Expense(date, category, amount, comment));
     }
-
-
-
-    //use get expense method and print it in ui
-//        // if (category.length < groceries.length) --> add space
-//    }
 }

@@ -19,10 +19,6 @@ public class Expense {
         return date;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
     public int getAmount() {
         return amount;
     }
