@@ -45,13 +45,17 @@ public class Unixpense {
             doView();
         } else if (command.equals("t")) {
             doTrack();
+        } else if (command.equals("a")) {
+            doViewArchive();
+        } else if (command.equals("s")) {
+            doArchive();
         } else {
             System.out.println("Selection not valid...");
         }
     }
 
     // MODIFIES: this
-    // EFFECTS: initializes accounts
+    // EFFECTS: initializes expenses
     private void init() {
         exp = new Expenses();
         exp.addExpense(new Expense(LocalDate.now(), "Groceries", 32, ""));
@@ -65,11 +69,12 @@ public class Unixpense {
         System.out.println("\nSelect from:");
         System.out.println("\tv -> to view your expenses");
         System.out.println("\tt -> to track your expenses");
+        System.out.println("\ta -> to view your archives");
+        System.out.println("\ts -> to store your expenses to archive");
         System.out.println("\tq -> to quit");
     }
 
-    // MODIFIES: this
-    // EFFECTS: conducts a deposit transaction
+    // EFFECTS: display the current view of the expenses list
     private void doView() {
         String space = "        ";
 
@@ -97,6 +102,34 @@ public class Unixpense {
         System.out.println("Sum of the month: " + "                    " + sum);
     }
 
+    // EFFECTS: display the archive list
+    private void doViewArchive() {
+        String space = "        ";
+
+        System.out.println("Date" + space + space + "Category" +  space + "  Amount" + space + "Comment");
+        double sum = 0;
+        for (int i = 0; i < exp.archiveLength(); i++) {
+            Expense ex1 = exp.getArchive(i);
+            sum = sum + ex1.getAmount();
+
+            StringBuilder categorySpace = new StringBuilder();
+            int spaceDiff = 10 - ex1.getCategory().length();
+            for (int j = 0; j < spaceDiff; j++) {
+                categorySpace.append(" ");
+            }
+
+            StringBuilder amountSpace = new StringBuilder();
+            int amountDiff = 5 - String.valueOf(Math.floor((ex1.getAmount()))).length();
+            for (int j = 0; j < amountDiff; j++) {
+                amountSpace.append(" ");
+            }
+
+            System.out.println(ex1.getDate() + space + "  " + ex1.getCategory() + categorySpace + space
+                    + ex1.getAmount() + amountSpace + space +  ex1.getComment());
+        }
+        System.out.println("Sum of the month: " + "                    " + sum);
+    }
+
     private void doTrack() {
         LocalDate date = null;
 
@@ -120,10 +153,16 @@ public class Unixpense {
         System.out.println("Input the expense's category:");
         String category = input.next();
         System.out.println("Input the expense's amount:");
-        int amount = Integer.parseInt(input.next());
+        double amount = Double.parseDouble(input.next());
         System.out.println("Input the expense's comment:");
         String comment = input.next();
 
         exp.addExpense(new Expense(date, category, amount, comment));
+    }
+
+    // MODIFIES: this
+    // EFFECTS: store current list of expenses to archive
+    public void doArchive() {
+        exp.archiveExpenses();
     }
 }

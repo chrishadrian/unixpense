@@ -5,11 +5,12 @@ import java.util.LinkedList;
 // Represents a LinkedList of Expense(s)
 public class Expenses {
     private final LinkedList<Expense> expenses;
-    private final LinkedList<Expense> archive = new LinkedList<>();
+    private final LinkedList<Expense> archive;
 
 
     public Expenses() {
         expenses = new LinkedList<>();
+        archive = new LinkedList<>();
     }
 
     // MODIFIES: this
@@ -26,8 +27,8 @@ public class Expenses {
     }
 
     // EFFECTS: return the sum of the expenses amount
-    public int sumExpenses() {
-        int sum = 0;
+    public double sumExpenses() {
+        double sum = 0;
         for (Expense next : expenses) {
             sum += next.getAmount();
         }
@@ -40,6 +41,10 @@ public class Expenses {
         return expenses.get(i);
     }
 
+    public Expense getArchive(int i) {
+        return archive.get(i);
+    }
+
     // MODIFIES: this
     // EFFECTS: duplicate current Expenses to a new Expenses, reset current Expenses
     public void archiveExpenses() {
@@ -50,5 +55,10 @@ public class Expenses {
     // EFFECTS: return expenses size
     public int length() {
         return expenses.size();
+    }
+
+    // EFFECTS: return archive's size
+    public int archiveLength() {
+        return archive.size();
     }
 }

@@ -10,8 +10,8 @@ especially University Students, who want to keep track of their expenses and do 
 - As a user, I want to be able to add an expense to my expenses list.
 - As a user, I want to be able to delete an expense from my expenses list.
 - As a user, I want to be able to see the sum amount of my expenses.
-- As a user, I want to be able to print the summary of categories-sorted expenses list.
-- AS a user, I want to be able to separate expenses list by month.
+- As a user, I want to be able to view my expenses list
+- AS a user, I want to be able to archive my expenses list.
 
 #
 *CPSC 210 Project: Created by Christopher Wong.*
