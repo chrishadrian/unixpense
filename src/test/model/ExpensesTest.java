@@ -29,7 +29,7 @@ public class ExpensesTest {
 
     @Test
     public void deleteLastExpenseTest() {
-        assertEquals(ex2, exp.deleteLastExpense());
+        assertEquals(ex2, exp.deleteExpense(3));
         assertEquals(2, exp.length());
     }
 
@@ -37,7 +37,7 @@ public class ExpensesTest {
     public void sumExpensesTest() {
         assertEquals(96.6, exp.sumExpenses());
 
-        exp.deleteLastExpense();
+        exp.deleteExpense(3);
         assertEquals(64.6, exp.sumExpenses());
     }
 

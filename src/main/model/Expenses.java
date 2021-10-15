@@ -22,8 +22,8 @@ public class Expenses {
     // REQUIRES: list must not be empty
     // MODIFIES: this
     // EFFECTS: delete the latest expense in the list
-    public Expense deleteLastExpense() {
-        return expenses.removeLast();
+    public Expense deleteExpense(int i) {
+        return expenses.remove(i-1);
     }
 
     // EFFECTS: return the sum of the expenses amount

@@ -41,18 +41,25 @@ public class Unixpense {
     // MODIFIES: this
     // EFFECTS: processes user command
     private void processCommand(String command) {
-        if (command.equals("v")) {
-            doView();
-        } else if (command.equals("t")) {
-            doTrack();
-        } else if (command.equals("a")) {
-            doViewArchive();
-        } else if (command.equals("s")) {
-            doArchive();
-        } else if (command.equals("d")) {
-            doDelete();
-        } else {
-            System.out.println("Selection not valid...");
+        switch (command) {
+            case "v":
+                doView();
+                break;
+            case "c":
+                doTrack();
+                break;
+            case "a":
+                doViewArchive();
+                break;
+            case "s":
+                doArchive();
+                break;
+            case "d":
+                doDelete();
+                break;
+            default:
+                System.out.println("Selection not valid...");
+                break;
         }
     }
 
@@ -70,10 +77,8 @@ public class Unixpense {
     private void displayMenu() {
         System.out.println("\nSelect from:");
         System.out.println("\tv -> to view your expenses");
-        System.out.println("\tt -> to track your expenses");
+        System.out.println("\tc -> to create your expense");
         System.out.println("\ta -> to view your archives");
-        System.out.println("\ts -> to store your expenses to archive");
-        System.out.println("\td -> to delete your latest expense(s)");
         System.out.println("\tq -> to quit");
     }
 
@@ -85,47 +90,43 @@ public class Unixpense {
         double sum = 0;
         for (int i = 0; i < exp.length(); i++) {
             Expense ex = exp.getExpense(i);
+
             sum = sum + ex.getAmount();
-
-            StringBuilder categorySpace = new StringBuilder();
-            int spaceDiff = 10 - ex.getCategory().length();
-            for (int j = 0; j < spaceDiff; j++) {
-                categorySpace.append(" ");
-            }
-
-            StringBuilder amountSpace = new StringBuilder();
-            int amountDiff = 5 - String.valueOf(ex.getAmount()).length();
-            for (int j = 0; j < amountDiff; j++) {
-                amountSpace.append(" ");
-            }
+            StringBuilder categorySpace = categorySpace(ex.getCategory().length());
+            StringBuilder amountSpace   = amountSpace(String.valueOf(Math.floor((ex.getAmount()))).length());
 
             System.out.println(ex.getDate() + space + "  " + ex.getCategory() + categorySpace + space
                     + ex.getAmount() + amountSpace + space +  ex.getComment());
         }
         System.out.println("Sum of the month: " + "                    " + sum);
+        displayViewMenu();
+    }
+
+    // EFFECTS: display menu when user is viewing their expenses list
+    private void displayViewMenu() {
+        System.out.println("\ts -> to store your expenses to archive");
+        System.out.println("\td -> to delete your i-th expense");
+        System.out.println("\tb -> to go back to home menu");
+
+        String command = input.next();
+        if (command.equals("b")) {
+            System.out.println("Returning to menu...");
+        } else {
+            processCommand(command);
+        }
     }
 
     // EFFECTS: display the archive list
     private void doViewArchive() {
         String space = "        ";
-
         System.out.println("Date" + space + space + "Category" +  space + "  Amount" + space + "Comment");
         double sum = 0;
         for (int i = 0; i < exp.archiveLength(); i++) {
             Expense ex1 = exp.getArchive(i);
             sum = sum + ex1.getAmount();
 
-            StringBuilder categorySpace = new StringBuilder();
-            int spaceDiff = 10 - ex1.getCategory().length();
-            for (int j = 0; j < spaceDiff; j++) {
-                categorySpace.append(" ");
-            }
-
-            StringBuilder amountSpace = new StringBuilder();
-            int amountDiff = 5 - String.valueOf(Math.floor((ex1.getAmount()))).length();
-            for (int j = 0; j < amountDiff; j++) {
-                amountSpace.append(" ");
-            }
+            StringBuilder categorySpace = categorySpace(ex1.getCategory().length());
+            StringBuilder amountSpace   = amountSpace(String.valueOf(Math.floor((ex1.getAmount()))).length());
 
             System.out.println(ex1.getDate() + space + "  " + ex1.getCategory() + categorySpace + space
                     + ex1.getAmount() + amountSpace + space +  ex1.getComment());
@@ -133,6 +134,28 @@ public class Unixpense {
         System.out.println("Sum of the month: " + "                    " + sum);
     }
 
+    // EFFECTS: create spaces after printing category in console
+    public StringBuilder categorySpace(int len) {
+        StringBuilder categorySpace = new StringBuilder();
+        int space = 10 - len;
+        for (int j = 0; j < space; j++) {
+            categorySpace.append(" ");
+        }
+        return categorySpace;
+    }
+
+    // EFFECTS: create spaces after printing amount in console
+    public StringBuilder amountSpace(int len) {
+        StringBuilder amountSpace = new StringBuilder();
+        int amountDiff = 5 - len;
+        for (int j = 0; j < amountDiff; j++) {
+            amountSpace.append(" ");
+        }
+        return amountSpace;
+    }
+
+
+    // EFFECTS: create an expense with this information: date, category, amount, comment.
     private void doTrack() {
         LocalDate date = null;
 
@@ -166,16 +189,16 @@ public class Unixpense {
     // MODIFIES: this
     // EFFECTS: store current list of expenses to archive
     public void doArchive() {
+        System.out.println("Archiving expenses...");
         exp.archiveExpenses();
     }
 
     // MODIFIES: this
-    // EFFECTS: delete latest expense(s)
+    // EFFECTS: delete expense(i) in Expense list
     public void doDelete() {
-        System.out.println("Input how many expense(s) do you wish to delete:");
+        System.out.println("Input which expense do you wish to delete (begin with 1):");
         int i = Integer.parseInt(input.next());
-        for (int j = 0; j < i; j++) {
-            exp.deleteLastExpense();
-        }
+        exp.deleteExpense(i);
+
     }
 }
