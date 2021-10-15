@@ -14,7 +14,7 @@ public class ExpensesTest {
     public void runBefore() {
         exp = new Expenses();
 
-        ex = new Expense(LocalDate.now(), "Groceries", 32, "");
+        ex = new Expense(LocalDate.now(), "Groceries", 32.3, "");
         ex2 = new Expense(LocalDate.now(), "Personal", 32, "");
         exp.addExpense(ex);
         exp.addExpense(ex);
@@ -35,10 +35,10 @@ public class ExpensesTest {
 
     @Test
     public void sumExpensesTest() {
-        assertEquals(96, exp.sumExpenses());
+        assertEquals(96.6, exp.sumExpenses());
 
         exp.deleteLastExpense();
-        assertEquals(64, exp.sumExpenses());
+        assertEquals(64.6, exp.sumExpenses());
     }
 
     @Test

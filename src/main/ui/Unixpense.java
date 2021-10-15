@@ -6,6 +6,7 @@ import model.Expenses;
 import java.time.LocalDate;
 import java.util.Scanner;
 
+// Unixpense application
 public class Unixpense {
     private Expenses exp;
     private Scanner input;
@@ -73,7 +74,7 @@ public class Unixpense {
         String space = "        ";
 
         System.out.println("Date" + space + space + "Category" +  space + "  Amount" + space + "Comment");
-        int sum = 0;
+        double sum = 0;
         for (int i = 0; i < exp.length(); i++) {
             Expense ex = exp.getExpense(i);
             sum = sum + ex.getAmount();

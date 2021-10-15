@@ -1,12 +1,11 @@
 package model;
 
-import java.time.LocalDate;
 import java.util.LinkedList;
 
+// Represents a LinkedList of Expense(s)
 public class Expenses {
-    private static LocalDate CURRENT_DATE = LocalDate.now();
-    private LinkedList<Expense> expenses;
-    private LinkedList<Expense> archive = new LinkedList<>();
+    private final LinkedList<Expense> expenses;
+    private final LinkedList<Expense> archive = new LinkedList<>();
 
 
     public Expenses() {

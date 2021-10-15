@@ -2,13 +2,14 @@ package model;
 
 import java.time.LocalDate;
 
+// Represents an expense that has this information: date, category, amount, comment.
 public class Expense {
     private LocalDate date;
     private String category;
-    private int amount;
+    private double amount;
     private String comment;
 
-    public Expense(LocalDate date, String category, int amount, String comment) {
+    public Expense(LocalDate date, String category, double amount, String comment) {
         this.date = date;
         this.category = category;
         this.amount = amount;
@@ -19,7 +20,7 @@ public class Expense {
         return date;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
