@@ -49,6 +49,8 @@ public class Unixpense {
             doViewArchive();
         } else if (command.equals("s")) {
             doArchive();
+        } else if (command.equals("d")) {
+            doDelete();
         } else {
             System.out.println("Selection not valid...");
         }
@@ -71,6 +73,7 @@ public class Unixpense {
         System.out.println("\tt -> to track your expenses");
         System.out.println("\ta -> to view your archives");
         System.out.println("\ts -> to store your expenses to archive");
+        System.out.println("\td -> to delete your latest expense(s)");
         System.out.println("\tq -> to quit");
     }
 
@@ -164,5 +167,15 @@ public class Unixpense {
     // EFFECTS: store current list of expenses to archive
     public void doArchive() {
         exp.archiveExpenses();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: delete latest expense(s)
+    public void doDelete() {
+        System.out.println("Input how many expense(s) do you wish to delete:");
+        int i = Integer.parseInt(input.next());
+        for (int j = 0; j < i; j++) {
+            exp.deleteLastExpense();
+        }
     }
 }
