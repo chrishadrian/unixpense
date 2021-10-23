@@ -1,8 +1,6 @@
 package persistence;
 
-import model.Category;
-import model.Thingy;
-import model.WorkRoom;
+import model.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -10,6 +8,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.stream.Stream;
 
 // Represents a reader that reads workroom from JSON data stored in file
@@ -23,17 +22,17 @@ public class JsonReader {
 
     // EFFECTS: reads workroom from file and returns it;
     // throws IOException if an error occurs reading data from file
-    public WorkRoom read() throws IOException {
+    public Expenses read() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
-        return parseWorkRoom(jsonObject);
+        return parseExpenses(jsonObject);
     }
 
     // EFFECTS: reads source file as string and returns it
     private String readFile(String source) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
 
-        try (Stream<String> stream = Files.lines( Paths.get(source), StandardCharsets.UTF_8)) {
+        try (Stream<String> stream = Files.lines(Paths.get(source), StandardCharsets.UTF_8)) {
             stream.forEach(s -> contentBuilder.append(s));
         }
 
@@ -41,29 +40,31 @@ public class JsonReader {
     }
 
     // EFFECTS: parses workroom from JSON object and returns it
-    private WorkRoom parseWorkRoom(JSONObject jsonObject) {
-        String name = jsonObject.getString("name");
-        WorkRoom wr = new WorkRoom(name);
-        addThingies(wr, jsonObject);
-        return wr;
+    private Expenses parseExpenses(JSONObject jsonObject) {
+        Expenses exp = new Expenses();
+        addExpenses(exp, jsonObject);
+        return exp;
     }
 
-    // MODIFIES: wr
-    // EFFECTS: parses thingies from JSON object and adds them to workroom
-    private void addThingies(WorkRoom wr, JSONObject jsonObject) {
-        JSONArray jsonArray = jsonObject.getJSONArray("thingies");
+    // MODIFIES: exp
+    // EFFECTS: parses expenses from JSON object and adds them to workroom
+    private void addExpenses(Expenses exp, JSONObject jsonObject) {
+        JSONArray jsonArray = jsonObject.getJSONArray("expenses");
         for (Object json : jsonArray) {
-            JSONObject nextThingy = (JSONObject) json;
-            addThingy(wr, nextThingy);
+            JSONObject nextExpense = (JSONObject) json;
+            addExpense(exp, nextExpense);
         }
     }
 
-    // MODIFIES: wr
-    // EFFECTS: parses thingy from JSON object and adds it to workroom
-    private void addThingy(WorkRoom wr, JSONObject jsonObject) {
-        String name = jsonObject.getString("name");
-        Category category = Category.valueOf(jsonObject.getString("category"));
-        Thingy thingy = new Thingy(name, category);
-        wr.addThingy(thingy);
+    // MODIFIES: exp
+    // EFFECTS: parses expense from JSON object and adds it to expenses
+    private void addExpense(Expenses exp, JSONObject jsonObject) {
+        String dateStr = jsonObject.getString("date");
+        LocalDate date = LocalDate.parse(dateStr);
+        String category = jsonObject.getString("category");
+        double amount = Double.parseDouble(jsonObject.getString("amount"));
+        String comment = jsonObject.getString("comment");
+        Expense ex = new Expense(date, category, amount, comment);
+        exp.addExpense(ex);
     }
 }

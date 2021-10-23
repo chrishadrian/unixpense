@@ -1,10 +1,12 @@
 package model;
 
-import java.util.Collections;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
 import java.util.LinkedList;
 
 // Represents a LinkedList of Expense(s)
-public class Expenses {
+public class Expenses implements Writable {
     private final LinkedList<Expense> expenses;
     private final LinkedList<Expense> archive;
 
@@ -39,7 +41,7 @@ public class Expenses {
     // MODIFIES: THIS
     // EFFECTS: Sort the expenses in the list based on date created (from oldest to newest)
     public void sortExpensesDate() {
-        Collections.sort(expenses, (x, y) -> x.getDate().compareTo(y.getDate()));
+        expenses.sort((x, y) -> x.getDate().compareTo(y.getDate()));
     }
 
     // REQUIRES: expenses list must not be empty
@@ -67,5 +69,22 @@ public class Expenses {
     // EFFECTS: return archive's size
     public int archiveLength() {
         return archive.size();
+    }
+
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("expenses", expensesToJson());
+        return json;
+    }
+
+    // EFFECTS: returns things in this workroom as a JSON array
+    private JSONArray expensesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Expense ex : expenses) {
+            jsonArray.put(ex.toJson());
+        }
+
+        return jsonArray;
     }
 }

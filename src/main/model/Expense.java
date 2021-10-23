@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 import java.time.LocalDate;
 
 // Represents an expense that has this information: date, category, amount, comment.
@@ -30,5 +32,14 @@ public class Expense {
 
     public String getComment() {
         return comment;
+    }
+
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("date", date);
+        json.put("category", category);
+        json.put("amount", amount);
+        json.put("comment", comment);
+        return json;
     }
 }
