@@ -7,12 +7,12 @@ student, I really want to reduce my expenses and do more savings. This applicati
 especially University Students, who want to keep track of their expenses and do more savings.
 
 ## User Stories
-- As a user, I want to be able to add an expense to my expenses list.
+- As a user, I want to be able whatsato add an expense to my expenses list.
 - As a user, I want to be able to delete an expense from my expenses list.
 - As a user, I want to be able to see the sum amount of my expenses.
 - As a user, I want to be able to view my expenses list
 - As a user, I want to be able to archive my expenses list.
-- As a user, when I select the quit option from the application menu, I want to be reminded to save my expenses list to file and have the option to do so or not.
+- As a user, when I select the quit option from the application menu, I want to be given the option to save my expenses list to file.
 - As a user, when I start the application, I want to be given the option to load my expenses list from file.
 
 #
