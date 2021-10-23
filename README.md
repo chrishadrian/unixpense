@@ -12,6 +12,8 @@ especially University Students, who want to keep track of their expenses and do 
 - As a user, I want to be able to see the sum amount of my expenses.
 - As a user, I want to be able to view my expenses list
 - As a user, I want to be able to archive my expenses list.
+- As a user, when I select the quit option from the application menu, I want to be reminded to save my expenses list to file and have the option to do so or not.
+- As a user, when I start the application, I want to be given the option to load my expenses list from file.
 
 #
 *CPSC 210 Project: Created by Christopher Wong.*
