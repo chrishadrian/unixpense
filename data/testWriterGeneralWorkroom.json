@@ -1,0 +1,13 @@
+{
+    "thingies": [
+        {
+            "name": "saw",
+            "category": "METALWORK"
+        },
+        {
+            "name": "needle",
+            "category": "STITCHING"
+        }
+    ],
+    "name": "My work room"
+}

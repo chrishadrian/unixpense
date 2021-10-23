@@ -42,6 +42,17 @@ public class ExpensesTest {
     }
 
     @Test
+    public void sortExpensesDate() {
+        Expense ex3 = new Expense(LocalDate.of(2002, 5, 23),
+                "Birthday", 2305, "");
+
+        exp.addExpense(ex3);
+        assertEquals(ex3, exp.getExpense(3));
+        exp.sortExpensesDate();
+        assertEquals(ex3, exp.getExpense(0));
+    }
+
+    @Test
     public void getExpenseTest() {
         assertEquals(ex, exp.getExpense(0));
         assertEquals(ex2, exp.getExpense(2));

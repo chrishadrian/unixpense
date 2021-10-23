@@ -1,0 +1,17 @@
+{
+    "thingies": [
+        {
+            "name": "a",
+            "category": "WOODWORK"
+        },
+        {
+            "name": "a",
+            "category": "METALWORK"
+        },
+        {
+            "name": "agaga",
+            "category": "STITCHING"
+        }
+    ],
+    "name": "Alex's workroom"
+}

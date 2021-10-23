@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Collections;
 import java.util.LinkedList;
 
 // Represents a LinkedList of Expense(s)
@@ -33,6 +34,12 @@ public class Expenses {
             sum += next.getAmount();
         }
         return sum;
+    }
+
+    // MODIFIES: THIS
+    // EFFECTS: Sort the expenses in the list based on date created (from oldest to newest)
+    public void sortExpensesDate() {
+        Collections.sort(expenses, (x, y) -> x.getDate().compareTo(y.getDate()));
     }
 
     // REQUIRES: expenses list must not be empty

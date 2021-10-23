@@ -84,8 +84,8 @@ public class Unixpense {
 
     // EFFECTS: display the current view of the expenses list
     private void doView() {
+        exp.sortExpensesDate();
         String space = "        ";
-
         System.out.println("Date" + space + space + "Category" +  space + "  Amount" + space + "Comment");
         double sum = 0;
         for (int i = 0; i < exp.length(); i++) {
@@ -118,6 +118,7 @@ public class Unixpense {
 
     // EFFECTS: display the archive list
     private void doViewArchive() {
+        exp.sortExpensesDate();
         String space = "        ";
         System.out.println("Date" + space + space + "Category" +  space + "  Amount" + space + "Comment");
         double sum = 0;
