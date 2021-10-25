@@ -1,17 +1,20 @@
-{
-    "thingies": [
-        {
-            "name": "a",
-            "category": "WOODWORK"
-        },
-        {
-            "name": "a",
-            "category": "METALWORK"
-        },
-        {
-            "name": "agaga",
-            "category": "STITCHING"
-        }
-    ],
-    "name": "Alex's workroom"
-}
+{"expenses": [
+    {
+        "date": "2021-10-25",
+        "amount": "32.0",
+        "comment": "",
+        "category": "Groceries"
+    },
+    {
+        "date": "2021-10-25",
+        "amount": "32.0",
+        "comment": "",
+        "category": "Personal"
+    },
+    {
+        "date": "2021-10-25",
+        "amount": "1.21",
+        "comment": "",
+        "category": "Groceries"
+    }
+]}

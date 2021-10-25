@@ -62,7 +62,8 @@ public class JsonReader {
         String dateStr = jsonObject.getString("date");
         LocalDate date = LocalDate.parse(dateStr);
         String category = jsonObject.getString("category");
-        double amount = Double.parseDouble(jsonObject.getString("amount"));
+        String amountStr = jsonObject.getString("amount");
+        double amount = Double.parseDouble(amountStr);
         String comment = jsonObject.getString("comment");
         Expense ex = new Expense(date, category, amount, comment);
         exp.addExpense(ex);

@@ -38,7 +38,7 @@ public class Expense {
         JSONObject json = new JSONObject();
         json.put("date", date);
         json.put("category", category);
-        json.put("amount", amount);
+        json.put("amount", Double.toString(amount));
         json.put("comment", comment);
         return json;
     }

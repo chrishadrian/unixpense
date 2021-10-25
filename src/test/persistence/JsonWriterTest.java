@@ -55,7 +55,7 @@ class JsonWriterTest extends JsonTest {
             writer.write(exp);
             writer.close();
 
-            JsonReader reader = new JsonReader("./data/testReaderGeneralExpenses.json");
+            JsonReader reader = new JsonReader("./data/testWriterGeneralExpenses.json");
             exp = reader.read();
             List<Expense> expenses = exp.getExpenses();
             assertEquals(2, expenses.size());

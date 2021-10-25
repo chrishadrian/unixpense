@@ -1,13 +1,13 @@
 {"expenses": [
     {
-        "date": "2021-10-24",
-        "amount": 10,
+        "date": "2021-10-25",
+        "amount": "10.0",
         "comment": "",
         "category": "Groceries"
     },
     {
-        "date": "2021-10-24",
-        "amount": 32.2,
+        "date": "2021-10-25",
+        "amount": "32.2",
         "comment": "",
         "category": "Personal"
     }

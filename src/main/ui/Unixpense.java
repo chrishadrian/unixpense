@@ -2,17 +2,26 @@ package ui;
 
 import model.Expense;
 import model.Expenses;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Scanner;
 
 // Unixpense application
 public class Unixpense {
+    private static final String JSON_STORE = "./data/expenses.json";
     private Expenses exp;
     private Scanner input;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: runs the Unixpense application
     public Unixpense() {
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         runUnixpense();
     }
 
@@ -23,6 +32,7 @@ public class Unixpense {
         String command;
 
         init();
+        displayLoad();
 
         while (keepGoing) {
             displayMenu();
@@ -38,6 +48,18 @@ public class Unixpense {
         System.out.println("\nGoodbye!");
     }
 
+    // EFFECTS: displays the first menu when the program has just started
+    private void displayLoad() {
+        System.out.println("\nUnixpense: University Expense");
+        System.out.println("\t-----------------------------");
+        System.out.println("\tLoad your previous work? (Y/N)");
+        String command = input.next();
+        command = command.toLowerCase();
+        if (command.equals("y")) {
+            loadExpenses();
+        }
+    }
+
     // MODIFIES: this
     // EFFECTS: processes user command
     private void processCommand(String command) {
@@ -48,11 +70,11 @@ public class Unixpense {
             case "c":
                 doTrack();
                 break;
-            case "a":
-                doViewArchive();
-                break;
+//            case "a":
+//                doViewArchive();
+//                break;
             case "s":
-                doArchive();
+                saveExpenses();
                 break;
             case "d":
                 doDelete();
@@ -78,7 +100,7 @@ public class Unixpense {
         System.out.println("\nSelect from:");
         System.out.println("\tv -> to view your expenses");
         System.out.println("\tc -> to create your expense");
-        System.out.println("\ta -> to view your archives");
+//        System.out.println("\ta -> to view your archives");
         System.out.println("\tq -> to quit");
     }
 
@@ -104,7 +126,7 @@ public class Unixpense {
 
     // EFFECTS: display menu when user is viewing their expenses list
     private void displayViewMenu() {
-        System.out.println("\ts -> to store your expenses to archive");
+        System.out.println("\ts -> to save your expenses");
         System.out.println("\td -> to delete your i-th expense");
         System.out.println("\tb -> to go back to home menu");
 
@@ -116,24 +138,24 @@ public class Unixpense {
         }
     }
 
-    // EFFECTS: display the archive list
-    private void doViewArchive() {
-        exp.sortExpensesDate();
-        String space = "        ";
-        System.out.println("Date" + space + space + "Category" +  space + "  Amount" + space + "Comment");
-        double sum = 0;
-        for (int i = 0; i < exp.archiveLength(); i++) {
-            Expense ex1 = exp.getArchive(i);
-            sum = sum + ex1.getAmount();
-
-            StringBuilder categorySpace = categorySpace(ex1.getCategory().length());
-            StringBuilder amountSpace   = amountSpace(String.valueOf(Math.floor((ex1.getAmount()))).length());
-
-            System.out.println(ex1.getDate() + space + "  " + ex1.getCategory() + categorySpace + space
-                    + ex1.getAmount() + amountSpace + space +  ex1.getComment());
-        }
-        System.out.println("Sum of the month: " + "                    " + sum);
-    }
+//    // EFFECTS: display the archive list
+//    private void doViewArchive() {
+//        exp.sortExpensesDate();
+//        String space = "        ";
+//        System.out.println("Date" + space + space + "Category" +  space + "  Amount" + space + "Comment");
+//        double sum = 0;
+//        for (int i = 0; i < exp.archiveLength(); i++) {
+//            Expense ex1 = exp.getArchive(i);
+//            sum = sum + ex1.getAmount();
+//
+//            StringBuilder categorySpace = categorySpace(ex1.getCategory().length());
+//            StringBuilder amountSpace   = amountSpace(String.valueOf(Math.floor((ex1.getAmount()))).length());
+//
+//            System.out.println(ex1.getDate() + space + "  " + ex1.getCategory() + categorySpace + space
+//                    + ex1.getAmount() + amountSpace + space +  ex1.getComment());
+//        }
+//        System.out.println("Sum of the month: " + "                    " + sum);
+//    }
 
     // EFFECTS: create spaces after printing category in console
     public StringBuilder categorySpace(int len) {
@@ -187,12 +209,12 @@ public class Unixpense {
         exp.addExpense(new Expense(date, category, amount, comment));
     }
 
-    // MODIFIES: this
-    // EFFECTS: store current list of expenses to archive
-    public void doArchive() {
-        System.out.println("Archiving expenses...");
-        exp.archiveExpenses();
-    }
+//    // MODIFIES: this
+//    // EFFECTS: store current list of expenses to archive
+//    public void doArchive() {
+//        System.out.println("Archiving expenses...");
+//        exp.archiveExpenses();
+//    }
 
     // MODIFIES: this
     // EFFECTS: delete expense(i) in Expense list
@@ -201,5 +223,28 @@ public class Unixpense {
         int i = Integer.parseInt(input.next());
         exp.deleteExpense(i);
 
+    }
+
+    // EFFECTS: saves the workroom to file
+    private void saveExpenses() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(exp);
+            jsonWriter.close();
+            System.out.println("Saving expenses to " + JSON_STORE + "...");
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads workroom from file
+    private void loadExpenses() {
+        try {
+            exp = jsonReader.read();
+            System.out.println("Loaded Expenses from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
     }
 }
