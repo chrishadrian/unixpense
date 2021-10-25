@@ -11,12 +11,9 @@ import java.util.List;
 // Represents a LinkedList of Expense(s)
 public class Expenses implements Writable {
     private final LinkedList<Expense> expenses;
-    private final LinkedList<Expense> archive;
-
 
     public Expenses() {
         expenses = new LinkedList<>();
-        archive = new LinkedList<>();
     }
 
     // MODIFIES: this
@@ -53,25 +50,9 @@ public class Expenses implements Writable {
         return expenses.get(i);
     }
 
-    public Expense getArchive(int i) {
-        return archive.get(i);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: duplicate current Expenses to a new Expenses, reset current Expenses
-    public void archiveExpenses() {
-        archive.addAll(expenses);
-        expenses.clear();
-    }
-
     // EFFECTS: return expenses size
     public int length() {
         return expenses.size();
-    }
-
-    // EFFECTS: return archive's size
-    public int archiveLength() {
-        return archive.size();
     }
 
     public JSONObject toJson() {

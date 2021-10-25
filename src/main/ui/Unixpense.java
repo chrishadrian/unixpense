@@ -138,25 +138,6 @@ public class Unixpense {
         }
     }
 
-//    // EFFECTS: display the archive list
-//    private void doViewArchive() {
-//        exp.sortExpensesDate();
-//        String space = "        ";
-//        System.out.println("Date" + space + space + "Category" +  space + "  Amount" + space + "Comment");
-//        double sum = 0;
-//        for (int i = 0; i < exp.archiveLength(); i++) {
-//            Expense ex1 = exp.getArchive(i);
-//            sum = sum + ex1.getAmount();
-//
-//            StringBuilder categorySpace = categorySpace(ex1.getCategory().length());
-//            StringBuilder amountSpace   = amountSpace(String.valueOf(Math.floor((ex1.getAmount()))).length());
-//
-//            System.out.println(ex1.getDate() + space + "  " + ex1.getCategory() + categorySpace + space
-//                    + ex1.getAmount() + amountSpace + space +  ex1.getComment());
-//        }
-//        System.out.println("Sum of the month: " + "                    " + sum);
-//    }
-
     // EFFECTS: create spaces after printing category in console
     public StringBuilder categorySpace(int len) {
         StringBuilder categorySpace = new StringBuilder();
@@ -208,13 +189,6 @@ public class Unixpense {
 
         exp.addExpense(new Expense(date, category, amount, comment));
     }
-
-//    // MODIFIES: this
-//    // EFFECTS: store current list of expenses to archive
-//    public void doArchive() {
-//        System.out.println("Archiving expenses...");
-//        exp.archiveExpenses();
-//    }
 
     // MODIFIES: this
     // EFFECTS: delete expense(i) in Expense list
