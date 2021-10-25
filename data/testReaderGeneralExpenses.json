@@ -1,0 +1,16 @@
+{
+    "expenses": [
+        {
+          "date": "2021-10-24",
+          "category": "Groceries",
+          "amount": "10",
+          "comment": ""
+        },
+      {
+        "date": "2021-10-24",
+        "category": "Personal",
+        "amount": "32.2",
+        "comment": ""
+      }
+    ]
+}

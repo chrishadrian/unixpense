@@ -1,11 +1,10 @@
 package persistence;
 
-import model.Category;
-import model.Thingy;
-import model.WorkRoom;
+import model.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,7 +16,7 @@ class JsonReaderTest extends JsonTest {
     void testReaderNonExistentFile() {
         JsonReader reader = new JsonReader("./data/noSuchFile.json");
         try {
-            WorkRoom wr = reader.read();
+            Expenses exp = reader.read();
             fail("IOException expected");
         } catch (IOException e) {
             // pass
@@ -25,27 +24,25 @@ class JsonReaderTest extends JsonTest {
     }
 
     @Test
-    void testReaderEmptyWorkRoom() {
-        JsonReader reader = new JsonReader("./data/testReaderEmptyWorkRoom.json");
+    void testReaderEmptyExpenses() {
+        JsonReader reader = new JsonReader("./data/testReaderEmptyExpenses.json");
         try {
-            WorkRoom wr = reader.read();
-            assertEquals("My work room", wr.getName());
-            assertEquals(0, wr.numThingies());
+            Expenses exp = reader.read();
+            assertEquals(0, exp.length());
         } catch (IOException e) {
             fail("Couldn't read from file");
         }
     }
 
     @Test
-    void testReaderGeneralWorkRoom() {
-        JsonReader reader = new JsonReader("./data/testReaderGeneralWorkRoom.json");
+    void testReaderGeneralExpenses() {
+        JsonReader reader = new JsonReader("./data/testReaderGeneralExpenses.json");
         try {
-            WorkRoom wr = reader.read();
-            assertEquals("My work room", wr.getName());
-            List<Thingy> thingies = wr.getThingies();
-            assertEquals(2, thingies.size());
-            checkThingy("needle", Category.STITCHING, thingies.get(0));
-            checkThingy("saw", Category.WOODWORK, thingies.get(1));
+            Expenses exp = reader.read();
+            List<Expense> expenses = exp.getExpenses();
+            assertEquals(2, expenses.size());
+            checkExpense(LocalDate.now(), "Groceries", 10, "", expenses.get(0));
+            checkExpense(LocalDate.now(), "Personal", 32.2, "", expenses.get(1));
         } catch (IOException e) {
             fail("Couldn't read from file");
         }

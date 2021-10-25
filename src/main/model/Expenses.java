@@ -3,7 +3,10 @@ package model;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
+
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 // Represents a LinkedList of Expense(s)
 public class Expenses implements Writable {
@@ -86,5 +89,10 @@ public class Expenses implements Writable {
         }
 
         return jsonArray;
+    }
+
+    // EFFECTS: returns an unmodifiable list of thingies in this workroom
+    public List<Expense> getExpenses() {
+        return Collections.unmodifiableList(expenses);
     }
 }
