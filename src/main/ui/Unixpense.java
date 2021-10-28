@@ -40,6 +40,11 @@ public class Unixpense {
             command = command.toLowerCase();
 
             if (command.equals("q")) {
+                System.out.println("Do you want to save your expenses list before you leave? (Y/N)");
+                command = input.next().toLowerCase();
+                if (command.equals("y")) {
+                    saveExpenses();
+                }
                 keepGoing = false;
             } else {
                 processCommand(command);
@@ -70,9 +75,6 @@ public class Unixpense {
             case "c":
                 doTrack();
                 break;
-//            case "a":
-//                doViewArchive();
-//                break;
             case "s":
                 saveExpenses();
                 break;
@@ -100,7 +102,6 @@ public class Unixpense {
         System.out.println("\nSelect from:");
         System.out.println("\tv -> to view your expenses");
         System.out.println("\tc -> to create your expense");
-//        System.out.println("\ta -> to view your archives");
         System.out.println("\tq -> to quit");
     }
 
@@ -126,11 +127,11 @@ public class Unixpense {
 
     // EFFECTS: display menu when user is viewing their expenses list
     private void displayViewMenu() {
-        System.out.println("\ts -> to save your expenses");
         System.out.println("\td -> to delete your i-th expense");
         System.out.println("\tb -> to go back to home menu");
 
         String command = input.next();
+        command.toLowerCase();
         if (command.equals("b")) {
             System.out.println("Returning to menu...");
         } else {
