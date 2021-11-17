@@ -25,6 +25,8 @@ public class MainFrame extends JFrame {
         // Add Swing components to content pane
         Container c = getContentPane();
 
+//        c.add(sortPanel, BorderLayout.NORTH);
+//        c.add(tablePanel, BorderLayout.CENTER);
         c.add(buttonsPanel, BorderLayout.SOUTH);
 
     }

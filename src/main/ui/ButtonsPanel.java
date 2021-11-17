@@ -42,7 +42,7 @@ public class ButtonsPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == createBtn) {
-            CreateWindow cw = new CreateWindow();
+            new CreateWindow();
         }
     }
 }
