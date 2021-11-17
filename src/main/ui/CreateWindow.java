@@ -89,6 +89,3 @@ public class CreateWindow implements ActionListener {
         }
     }
 }
-
-//        label.setBounds(0,0,100,50);
-//        label.setFont(new Font(null, Font.PLAIN, 25));

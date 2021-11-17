@@ -10,7 +10,6 @@ public class Main {
             public void run() {
                 JFrame frame = new MainFrame("Hello World Swing!");
                 frame.setSize(600,400);
-//                frame.setResizable(false);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setVisible(true);
             }
