@@ -203,10 +203,10 @@ public class Unixpense {
     // EFFECTS: saves the workroom to file
     private void saveExpenses() {
         try {
+            System.out.println("Saving expenses to " + JSON_STORE + "...");
             jsonWriter.open();
             jsonWriter.write(exp);
             jsonWriter.close();
-            System.out.println("Saving expenses to " + JSON_STORE + "...");
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file: " + JSON_STORE);
         }
