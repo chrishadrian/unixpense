@@ -1,13 +1,12 @@
 package ui;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 
 public class MainFrame extends JFrame {
 
-    private JPanel sortPanel;
-    private JPanel tablePanel;
+    private ImagePanel imagePanel;
+    private TablePanel tablePanel;
     private ButtonsPanel buttonsPanel;
     private JPanel createPanel;
 
@@ -20,21 +19,18 @@ public class MainFrame extends JFrame {
         setLayout(new BorderLayout());
 
         // Create Swing component
+        imagePanel = new ImagePanel();
+        tablePanel = new TablePanel();
         buttonsPanel = new ButtonsPanel();
 
         // Add Swing components to content pane
         Container c = getContentPane();
 
-//        c.add(sortPanel, BorderLayout.NORTH);
-//        c.add(tablePanel, BorderLayout.CENTER);
+        c.add(imagePanel, BorderLayout.NORTH);
+        c.add(tablePanel, BorderLayout.CENTER);
         c.add(buttonsPanel, BorderLayout.SOUTH);
 
     }
 }
 
-//        ImageIcon image = new ImageIcon("./data/expenses.png");
-//JLabel label = new JLabel();
-//        label.setText("Unixpense");
-//                label.setHorizontalTextPosition(JLabel.LEFT);
-//                label.setVerticalTextPosition(JLabel.TOP);
 //frame.dispose();

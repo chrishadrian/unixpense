@@ -5,7 +5,7 @@ import javax.swing.event.EventListenerList;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLOutput;
+import java.text.AttributedString;
 
 public class CreateWindow implements ActionListener {
 
@@ -27,27 +27,13 @@ public class CreateWindow implements ActionListener {
     private EventListenerList listenerList = new EventListenerList();
 
     public CreateWindow() {
-        frame = new JFrame();
-        frame.setSize(600,600);
-        frame.setLayout(new GridLayout(5,5));
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setFrame();
 
-        dateLabel = new JLabel("Date: ");
-        categoryLabel = new JLabel("Category: ");
-        amountLabel = new JLabel("Amount: ");
-        commentsLabel = new JLabel("Comments: ");
+        setLabel();
 
-        dateTF = new JTextField();
-        dateTF.setText("Insert 'Today' if you want to use current date");
-        categoryTF = new JTextField();
-        amountTF = new JTextField();
-        commentsTF = new JTextField();
+        setTextField();
 
-        addBtn = new JButton("Add");
-        addBtn.addActionListener(this);
-        resetBtn = new JButton("Reset");
-        resetBtn.addActionListener(this);
+        setButtons();
 
         frame.add(dateLabel);
         frame.add(dateTF);
@@ -62,6 +48,35 @@ public class CreateWindow implements ActionListener {
 
 
         frame.setVisible(true);
+    }
+
+    private void setButtons() {
+        addBtn = new JButton("Add");
+        addBtn.addActionListener(this);
+        resetBtn = new JButton("Reset");
+        resetBtn.addActionListener(this);
+    }
+
+    private void setTextField() {
+        dateTF = new JTextField();
+        dateTF.setText("Insert 'today' to use current date");
+        categoryTF = new JTextField();
+        amountTF = new JTextField();
+        commentsTF = new JTextField();
+    }
+
+    private void setLabel() {
+        dateLabel = new JLabel("Date: ");
+        categoryLabel = new JLabel("Category: ");
+        amountLabel = new JLabel("Amount: ");
+        commentsLabel = new JLabel("Comments: ");
+    }
+
+    private void setFrame() {
+        frame = new JFrame();
+        frame.setSize(450,300);
+        frame.setLayout(new GridLayout(5,5));
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     @Override

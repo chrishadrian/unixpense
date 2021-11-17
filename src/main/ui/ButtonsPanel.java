@@ -19,7 +19,7 @@ public class ButtonsPanel extends JPanel implements ActionListener {
         Dimension size = getPreferredSize();
         size.width = 800;
         size.height = 100;
-        setPreferredSize(size);
+        setSize(size);
 
         createBtn = new JButton("Create");
         deleteBtn = new JButton("Delete");
