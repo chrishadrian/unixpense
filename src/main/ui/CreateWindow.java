@@ -1,11 +1,14 @@
 package ui;
 
+import model.Expense;
+import model.Expenses;
+
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.AttributedString;
+import java.time.LocalDate;
 
 public class CreateWindow implements ActionListener {
 
@@ -24,9 +27,13 @@ public class CreateWindow implements ActionListener {
     private JButton addBtn;
     private JButton resetBtn;
 
-    private EventListenerList listenerList = new EventListenerList();
+    private Expense ex;
+    private Expenses exp;
 
-    public CreateWindow() {
+
+    public CreateWindow(Expenses exp) {
+        this.exp = exp;
+
         setFrame();
 
         setLabel();
@@ -35,6 +42,12 @@ public class CreateWindow implements ActionListener {
 
         setButtons();
 
+        addProperties();
+
+        frame.setVisible(true);
+    }
+
+    private void addProperties() {
         frame.add(dateLabel);
         frame.add(dateTF);
         frame.add(categoryLabel);
@@ -45,9 +58,6 @@ public class CreateWindow implements ActionListener {
         frame.add(commentsTF);
         frame.add(addBtn);
         frame.add(resetBtn);
-
-
-        frame.setVisible(true);
     }
 
     private void setButtons() {
@@ -59,7 +69,7 @@ public class CreateWindow implements ActionListener {
 
     private void setTextField() {
         dateTF = new JTextField();
-        dateTF.setText("Insert 'today' to use current date");
+        dateTF.setText("Insert 'today' to use current date or YYYY-MM-DD)");
         categoryTF = new JTextField();
         amountTF = new JTextField();
         commentsTF = new JTextField();
@@ -82,10 +92,36 @@ public class CreateWindow implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == addBtn) {
-            System.out.println("Add button clicked!");
+            exportExpense();
             frame.dispose();
+
         } else if (e.getSource() == resetBtn) {
-            System.out.println("Reset button clicked!");
+            dateTF.setText("");
+            categoryTF.setText("");
+            amountTF.setText("");
+            commentsTF.setText("");
         }
+    }
+
+    private void exportExpense() {
+        LocalDate date;
+        if (dateTF.getText().toLowerCase() == "today") {
+            date = LocalDate.now();
+        } else {
+            String temp = dateTF.getText();
+            int year = Integer.parseInt(temp.substring(0,4));
+            int mon = Integer.parseInt(temp.substring(5,7));
+            int day = Integer.parseInt(temp.substring(8,10));
+            date = LocalDate.of(year, mon, day);
+        }
+        ex = new Expense(date, categoryTF.getText(), Double.parseDouble(amountTF.getText()), commentsTF.getText());
+        exp.addExpense(ex);
+    }
+
+    public Expenses getExpenses() {
+        if (exp.length() != 0) {
+            return exp;
+        }
+        return null;
     }
 }

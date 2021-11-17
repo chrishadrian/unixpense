@@ -1,5 +1,7 @@
 package ui;
 
+import model.Expenses;
+
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
 import java.awt.*;
@@ -15,7 +17,9 @@ public class ButtonsPanel extends JPanel implements ActionListener {
     private JButton loadBtn;
     private JButton saveBtn;
 
-    public ButtonsPanel() {
+    private Expenses exp;
+
+    public ButtonsPanel(Expenses exp) {
         Dimension size = getPreferredSize();
         size.width = 800;
         size.height = 100;
@@ -37,12 +41,20 @@ public class ButtonsPanel extends JPanel implements ActionListener {
         add(deleteBtn);
         add(loadBtn);
         add(saveBtn);
+
+        this.exp = exp;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == createBtn) {
-            new CreateWindow();
+            new CreateWindow(exp);
+        } else if (e.getSource() == deleteBtn) {
+
+        } else if (e.getSource() == loadBtn) {
+
+        } else if (e.getSource() == saveBtn) {
+
         }
     }
 }

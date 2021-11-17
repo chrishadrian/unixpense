@@ -1,43 +1,59 @@
 package ui;
 
+import model.Expense;
+import model.Expenses;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
 
 public class TablePanel extends JPanel {
 
+    private Expenses exp;
     private boolean debugToggle = false;
-
     private JTable expTable;
 
-    public TablePanel() {
+    public TablePanel(Expenses exp) {
         super(new GridLayout(1,0));
 
-        String[] columnNames = {"Date",
-                "Category",
-                "Amount",
-                "Comments"};
+        this.exp = exp;
+        this.exp.addExpense(new Expense(LocalDate.now(), "Groceries", 32, ""));
+        this.exp.addExpense(new Expense(LocalDate.now(), "Personal", 32, ""));
 
-        Object[][] data = {
-                {"Kathy", "Smith", new Integer(5), "a"},
-                {"John", "Doe", new Integer(3), "a"},
-                {"Sue", "Black", new Integer(2), "a"},
-                {"Jane", "White", new Integer(20), "a"},
-                {"Joe", "Brown", new Integer(10), "a"}
-        };
-
-        setTable(columnNames, data);
+        String[] columnNames = {"Date", "Category", "Amount", "Comments"};
+        setTable(columnNames);
 
         debugTable();
 
-        add(new JScrollPane(expTable));
+        printExpenses(columnNames);
     }
 
-    private void setTable(String[] columnNames, Object[][] data) {
+    private void printExpenses(String[] columnNames) {
+        DefaultTableModel model = new DefaultTableModel();
+        expTable.setModel(model);
+
+        model.setColumnIdentifiers(columnNames);
+
+        for (int i = 0; i < exp.length(); i++) {
+            Expense ex = exp.getExpense(i);
+            Object[] o = new Object[4];
+            o[0] = ex.getDate();
+            o[1] = ex.getCategory();
+            o[2] = ex.getAmount();
+            o[3] = ex.getComment();
+            model.addRow(o);
+        }
+    }
+
+    private void setTable(String[] columnNames) {
+        Object[][] data = {};
         expTable = new JTable(data, columnNames);
         expTable.setPreferredScrollableViewportSize(new Dimension(500, 70));
         expTable.setFillsViewportHeight(true);
+        add(new JScrollPane(expTable));
     }
 
     private void debugTable() {

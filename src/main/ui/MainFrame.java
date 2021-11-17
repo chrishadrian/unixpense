@@ -1,5 +1,7 @@
 package ui;
 
+import model.Expenses;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,20 +10,22 @@ public class MainFrame extends JFrame {
     private ImagePanel imagePanel;
     private TablePanel tablePanel;
     private ButtonsPanel buttonsPanel;
-    private JPanel createPanel;
 
-
+    private Expenses exp;
 
     MainFrame(String title) {
-        super("Unixpense");
+        super(title);
+
+        // Initialize expenses
+        exp = new Expenses();
 
         // Set layout manager
         setLayout(new BorderLayout());
 
         // Create Swing component
-        imagePanel = new ImagePanel();
-        tablePanel = new TablePanel();
-        buttonsPanel = new ButtonsPanel();
+        imagePanel = new ImagePanel(exp);
+        tablePanel = new TablePanel(exp);
+        buttonsPanel = new ButtonsPanel(exp);
 
         // Add Swing components to content pane
         Container c = getContentPane();
@@ -31,4 +35,6 @@ public class MainFrame extends JFrame {
         c.add(buttonsPanel, BorderLayout.SOUTH);
 
     }
+
+
 }

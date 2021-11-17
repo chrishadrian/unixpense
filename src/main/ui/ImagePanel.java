@@ -1,5 +1,7 @@
 package ui;
 
+import model.Expenses;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,7 +10,7 @@ public class ImagePanel extends JPanel {
     JLabel titleLabel;
     JLabel iconLabel;
 
-    ImagePanel() {
+    ImagePanel(Expenses exp) {
         image = new ImageIcon("./data/expenses.png");
         resizeImage();
         iconLabel = new JLabel(image);
