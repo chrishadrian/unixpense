@@ -1,93 +1,38 @@
 package ui;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.time.LocalDate;
+import javax.swing.border.Border;
+import java.awt.*;
 
-public class MainFrame {
+public class MainFrame extends JFrame {
 
-    private JPanel rootPanel;
-    private JTable showTable;
-    private JButton createButton;
-    private JButton deleteButton;
-    private JButton loadButton;
-    private JButton saveButton;
-    private JComboBox sortByCombo;
+    private JPanel sortPanel;
+    private JPanel tablePanel;
+    private ButtonsPanel buttonsPanel;
+    private JPanel createPanel;
 
 
-    public MainFrame() {
-        setButtonPanel();
-        createTable();
-//        createDeleteButton();
-//        createSortCombo();
-    }
 
-    private void setButtonPanel() {
-        createButton = new JButton(new CreateButtonAction());
-//        deleteButton = new JButton(new DeleteButtonAction());
-//        loadButton = new JButton(new LoadButtonAction());
-//        saveButton = new JButton(new SaveButtonAction());
-    }
+    MainFrame(String title) {
+        super("Unixpense");
 
-    private void createTable() {
-        Object[][] data = {
-                {LocalDate.now(), "Groceries", 32.2, "First"},
-                {LocalDate.now(), "Personal", 12, "Second"},
-                {LocalDate.now(), "Groceries", 1, "Third"}
-        };
-        showTable.setModel(new DefaultTableModel(
-                data,
-                new String[] {"Date", "Category", "Amount", "Comments"}
-        ));
-//        TableColumnModel columns = showTable.getColumnModel();
-//        columns.getColumn(0).setMinWidth(100);
-    }
+        // Set layout manager
+        setLayout(new BorderLayout());
 
-    private class CreateButtonAction extends AbstractAction {
+        // Create Swing component
+        buttonsPanel = new ButtonsPanel();
 
-        CreateButtonAction() {
-            super("Create");
-        }
+        // Add Swing components to content pane
+        Container c = getContentPane();
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-//            CreateFrame frame = new CreateFrame("Create Expense");
-//            frame.setVisible(true);
-//            frame.pack();
-//            frame.setLocationRelativeTo(null);
-            String sensorLoc = JOptionPane.showInputDialog(null,
-                    "Sensor location?",
-                    "Enter sensor location",
-                    JOptionPane.QUESTION_MESSAGE);
-            System.out.println("IT WORKS!");
-        }
-    }
+        c.add(buttonsPanel, BorderLayout.SOUTH);
 
-
-//    public void createCreateGUI() {
-//        CreateFrame ui = new CreateFrame();
-//        JFrame frame = new JFrame();
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//
-//        //Create and set up the content pane.
-//        JPanel root = ui.getCreatePanel();
-//        frame.setContentPane(root);
-//
-//        //Display the window.
-//        frame.pack();
-//        frame.setLocationRelativeTo(null);
-//        frame.setVisible(true);
-//    }
-
-
-    public JPanel getRootPanel() {
-        return rootPanel;
-    }
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-        createButton = new JButton(new CreateButtonAction());
     }
 }
+
+//        ImageIcon image = new ImageIcon("./data/expenses.png");
+//JLabel label = new JLabel();
+//        label.setText("Unixpense");
+//                label.setHorizontalTextPosition(JLabel.LEFT);
+//                label.setVerticalTextPosition(JLabel.TOP);
+//frame.dispose();
