@@ -210,8 +210,6 @@ public class MainFrame extends JFrame {
         private JButton addBtn;
         private JButton resetBtn;
 
-        private Expense ex;
-
 
         public CreateWindow() {
             setFrame();
@@ -297,7 +295,8 @@ public class MainFrame extends JFrame {
             date = LocalDate.of(year, mon, day);
 //            }
 
-            ex = new Expense(date, categoryTF.getText(), Double.parseDouble(amountTF.getText()), commentsTF.getText());
+            Expense ex = new Expense(date, categoryTF.getText(),
+                    Double.parseDouble(amountTF.getText()), commentsTF.getText());
             exp.addExpense(ex);
         }
     }

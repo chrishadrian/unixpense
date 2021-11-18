@@ -22,5 +22,11 @@
         "amount": "121.0",
         "comment": "HA",
         "category": "Old"
+    },
+    {
+        "date": "2021-11-17",
+        "amount": "100.0",
+        "comment": "Gendut",
+        "category": "Christie"
     }
 ]}
