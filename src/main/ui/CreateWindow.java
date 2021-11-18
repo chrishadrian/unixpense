@@ -31,9 +31,7 @@
 //    private Expenses exp;
 //
 //
-//    public CreateWindow(Expenses exp) {
-//        this.exp = exp;
-//
+//    public CreateWindow(Boolean currentDate) {
 //        setFrame();
 //
 //        setLabel();
@@ -84,8 +82,8 @@
 //
 //    private void setFrame() {
 //        frame = new JFrame();
-//        frame.setSize(450,300);
-//        frame.setLayout(new GridLayout(5,5));
+//        frame.setSize(450, 300);
+//        frame.setLayout(new GridLayout(5, 5));
 //        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 //    }
 //
@@ -109,19 +107,12 @@
 //            date = LocalDate.now();
 //        } else {
 //            String temp = dateTF.getText();
-//            int year = Integer.parseInt(temp.substring(0,4));
-//            int mon = Integer.parseInt(temp.substring(5,7));
-//            int day = Integer.parseInt(temp.substring(8,10));
+//            int year = Integer.parseInt(temp.substring(0, 4));
+//            int mon = Integer.parseInt(temp.substring(5, 7));
+//            int day = Integer.parseInt(temp.substring(8, 10));
 //            date = LocalDate.of(year, mon, day);
 //        }
 //        ex = new Expense(date, categoryTF.getText(), Double.parseDouble(amountTF.getText()), commentsTF.getText());
 //        exp.addExpense(ex);
-//    }
-//
-//    public Expenses getExpenses() {
-//        if (exp.length() != 0) {
-//            return exp;
-//        }
-//        return null;
 //    }
 //}

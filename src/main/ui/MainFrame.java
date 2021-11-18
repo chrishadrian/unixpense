@@ -21,6 +21,7 @@ public class MainFrame extends JFrame {
     private ButtonsPanel buttonsPanel;
 
     private Expenses exp;
+    private Expenses tempExp;
     private DefaultTableModel model;
 
     private static final String JSON_STORE = "./data/expenses.json";
@@ -52,7 +53,7 @@ public class MainFrame extends JFrame {
         JsonReader jsonReader = new JsonReader(JSON_STORE);
         try {
             exp = jsonReader.read();
-            tablePanel.updateExpenses();
+            tablePanel.printExpenses();
             System.out.println("Loaded Expenses from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
@@ -111,13 +112,23 @@ public class MainFrame extends JFrame {
             expTable.setModel(model);
 
             model.setColumnIdentifiers(columnNames);
+        }
 
-            updateExpenses();
+        private void printExpenses() {
+            for (int i = 0; i < exp.length(); i++) {
+                Expense ex = exp.getExpense(i);
+                Object[] o = new Object[4];
+                o[0] = ex.getDate();
+                o[1] = ex.getCategory();
+                o[2] = ex.getAmount();
+                o[3] = ex.getComment();
+                model.addRow(o);
+            }
         }
 
         private void updateExpenses() {
-            for (int i = 0; i < exp.length(); i++) {
-                Expense ex = exp.getExpense(i);
+            for (int i = 0; i < tempExp.length(); i++) {
+                Expense ex = tempExp.getExpense(i);
                 Object[] o = new Object[4];
                 o[0] = ex.getDate();
                 o[1] = ex.getCategory();
@@ -182,13 +193,59 @@ public class MainFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == createBtn) {
-                new CreateWindow();
+                new CreateWindow(true);
             } else if (e.getSource() == deleteBtn) {
                 tablePanel.deleteSelectedRow();
             } else if (e.getSource() == loadBtn) {
                 loadExpenses();
             } else if (e.getSource() == saveBtn) {
                 saveExpenses();
+            }
+        }
+    }
+
+    public class DateWindow implements ActionListener {
+
+        private JFrame frame;
+
+        private JLabel askDateLabel;
+        private JButton yesBtn;
+        private JButton noBtn;
+
+        public DateWindow() {
+            setFrame();
+
+            askDateLabel = new JLabel("Do you want to use current date?");
+
+            yesBtn = new JButton("Yes");
+            yesBtn.addActionListener(this);
+            noBtn = new JButton("No");
+            noBtn.addActionListener(this);
+
+            Container c = frame.getContentPane();
+
+            c.add(askDateLabel, BorderLayout.NORTH);
+            c.add(yesBtn, BorderLayout.CENTER);
+            c.add(noBtn, BorderLayout.CENTER);
+        }
+
+        private void setFrame() {
+            frame = new JFrame();
+            frame.setSize(300,100);
+            frame.setLayout(new BorderLayout());
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        }
+
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == yesBtn) {
+                new CreateWindow(true);
+                frame.dispose();
+
+            } else if (e.getSource() == noBtn) {
+                new CreateWindow(false);
+                frame.dispose();
             }
         }
     }
@@ -210,8 +267,12 @@ public class MainFrame extends JFrame {
         private JButton addBtn;
         private JButton resetBtn;
 
+        private Boolean currentDate;
 
-        public CreateWindow() {
+        public CreateWindow(Boolean currentDate) {
+            this.currentDate = currentDate;
+            tempExp = new Expenses();
+
             setFrame();
 
             setLabel();
@@ -247,7 +308,10 @@ public class MainFrame extends JFrame {
 
         private void setTextField() {
             dateTF = new JTextField();
-            dateTF.setText("Insert 'today' to use current date or YYYY-MM-DD)");
+            if (currentDate) {
+                dateTF.setText(String.valueOf(LocalDate.now()));
+            }
+
             categoryTF = new JTextField();
             amountTF = new JTextField();
             commentsTF = new JTextField();
@@ -283,21 +347,15 @@ public class MainFrame extends JFrame {
         }
 
         private void exportExpense() {
-            LocalDate date;
-
-//            if (dateTF.getText() == "0000") {
-//                date = LocalDate.now();
-//            } else {
             String temp = dateTF.getText();
             int year = Integer.parseInt(temp.substring(0, 4));
             int mon = Integer.parseInt(temp.substring(5, 7));
             int day = Integer.parseInt(temp.substring(8, 10));
-            date = LocalDate.of(year, mon, day);
-//            }
+            LocalDate date = LocalDate.of(year, mon, day);
 
             Expense ex = new Expense(date, categoryTF.getText(),
                     Double.parseDouble(amountTF.getText()), commentsTF.getText());
-            exp.addExpense(ex);
+            tempExp.addExpense(ex);
         }
     }
 
