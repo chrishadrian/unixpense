@@ -10,7 +10,7 @@ public class ImagePanel extends JPanel {
     JLabel titleLabel;
     JLabel iconLabel;
 
-    ImagePanel(Expenses exp) {
+    ImagePanel() {
         image = new ImageIcon("./data/expenses.png");
         resizeImage();
         iconLabel = new JLabel(image);

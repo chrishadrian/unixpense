@@ -19,7 +19,7 @@ public class ButtonsPanel extends JPanel implements ActionListener {
 
     private Expenses exp;
 
-    public ButtonsPanel(Expenses exp) {
+    public ButtonsPanel() {
         Dimension size = getPreferredSize();
         size.width = 800;
         size.height = 100;

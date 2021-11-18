@@ -16,7 +16,7 @@ public class TablePanel extends JPanel {
     private boolean debugToggle = false;
     private JTable expTable;
 
-    public TablePanel(Expenses exp) {
+    public TablePanel() {
         super(new GridLayout(1,0));
 
         this.exp = exp;

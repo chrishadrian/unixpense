@@ -1,20 +1,26 @@
 {"expenses": [
     {
-        "date": "2021-10-25",
+        "date": "2021-11-17",
         "amount": "32.0",
         "comment": "",
         "category": "Groceries"
     },
     {
-        "date": "2021-10-25",
+        "date": "2021-11-17",
         "amount": "32.0",
         "comment": "",
         "category": "Personal"
     },
     {
-        "date": "2021-10-28",
-        "amount": "121.3",
-        "comment": "a",
-        "category": "Groceries"
+        "date": "2021-05-23",
+        "amount": "23.0",
+        "comment": "HBD",
+        "category": "Birthday"
+    },
+    {
+        "date": "1997-05-21",
+        "amount": "121.0",
+        "comment": "HA",
+        "category": "Old"
     }
 ]}
