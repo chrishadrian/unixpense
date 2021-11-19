@@ -356,6 +356,7 @@ public class MainFrame extends JFrame {
             Expense ex = new Expense(date, categoryTF.getText(),
                     Double.parseDouble(amountTF.getText()), commentsTF.getText());
             tempExp.addExpense(ex);
+            exp.addExpense(ex);
         }
     }
 
