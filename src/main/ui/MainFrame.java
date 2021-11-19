@@ -11,7 +11,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class MainFrame extends JFrame {
 
@@ -99,7 +104,7 @@ public class MainFrame extends JFrame {
 
         private void setFrame() {
             frame = new JFrame();
-            frame.setSize(300,100);
+            frame.setSize(300, 100);
             frame.setLayout(new BorderLayout());
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frame.setAlwaysOnTop(true);
@@ -141,7 +146,7 @@ public class MainFrame extends JFrame {
 
         private void resizeImage() {
             Image img = image.getImage();
-            Image newImg = img.getScaledInstance(80,80,Image.SCALE_DEFAULT);
+            Image newImg = img.getScaledInstance(80, 80, Image.SCALE_DEFAULT);
             image = new ImageIcon(newImg);
         }
     }
@@ -151,7 +156,7 @@ public class MainFrame extends JFrame {
         private JTable expTable;
 
         public TablePanel() {
-            super(new GridLayout(1,0));
+            super(new GridLayout(1, 0));
 
             String[] columnNames = {"Date", "Category", "Amount", "Comments"};
             setTable(columnNames);
@@ -199,6 +204,7 @@ public class MainFrame extends JFrame {
 
         private final JButton createBtn;
         private final JButton deleteBtn;
+        private final JButton statsBtn;
         private final JButton saveBtn;
 
         public ButtonsPanel() {
@@ -209,16 +215,19 @@ public class MainFrame extends JFrame {
 
             createBtn = new JButton("Create");
             deleteBtn = new JButton("Delete");
+            statsBtn = new JButton("Stats");
             saveBtn = new JButton("Save");
 
             createBtn.addActionListener(this);
             deleteBtn.addActionListener(this);
+            statsBtn.addActionListener(this);
             saveBtn.addActionListener(this);
 
             setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
 
             add(createBtn);
             add(deleteBtn);
+            add(statsBtn);
             add(saveBtn);
         }
 
@@ -228,6 +237,8 @@ public class MainFrame extends JFrame {
                 new DateWindow();
             } else if (e.getSource() == deleteBtn) {
                 tablePanel.deleteSelectedRow();
+            } else if (e.getSource() == statsBtn) {
+                new StatsWindow();
             } else if (e.getSource() == saveBtn) {
                 saveExpenses();
             }
@@ -262,7 +273,7 @@ public class MainFrame extends JFrame {
 
         private void setFrame() {
             frame = new JFrame();
-            frame.setSize(300,100);
+            frame.setSize(300, 100);
             frame.setLayout(new BorderLayout());
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frame.setVisible(true);
@@ -354,8 +365,8 @@ public class MainFrame extends JFrame {
 
         private void setFrame() {
             frame = new JFrame();
-            frame.setSize(450,300);
-            frame.setLayout(new GridLayout(5,5));
+            frame.setSize(450, 300);
+            frame.setLayout(new GridLayout(5, 5));
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         }
 
@@ -383,6 +394,103 @@ public class MainFrame extends JFrame {
                 categoryTF.setText("");
                 amountTF.setText("");
                 commentsTF.setText("");
+            }
+        }
+    }
+
+    public class StatsWindow implements ActionListener {
+
+        private JFrame frame;
+
+        private final JLabel statsLabel;
+        private final JLabel sumLabel;
+        private final JLabel meanLabel;
+        private final JLabel medianLabel;
+
+        private final JButton okBtn;
+
+        private List<Double> amounts;
+        private final DecimalFormat df = new DecimalFormat("0.00");
+
+        public StatsWindow() {
+            setFrame();
+
+            amounts = new ArrayList<>();
+
+            statsLabel = new JLabel("Statistics");
+            statsLabel.setFont(new Font("Times New Roman", Font.BOLD, 18));
+            statsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+            df.setRoundingMode(RoundingMode.UP);
+            sumLabel = new JLabel(" Sum of expenses: " + sumExpenses());
+            meanLabel = new JLabel(" Mean of expenses: " + meanExpenses());
+            medianLabel = new JLabel(" Median of expenses: " + medianExpenses());
+
+            JPanel statsPanel = new JPanel(new BorderLayout());
+            statsPanel.add(sumLabel, BorderLayout.NORTH);
+            statsPanel.add(meanLabel, BorderLayout.CENTER);
+            statsPanel.add(medianLabel, BorderLayout.SOUTH);
+
+            okBtn = new JButton("I'M BROKE AF T_T");
+            okBtn.addActionListener(this);
+            okBtn.setSize(100, 40);
+
+            Container c = frame.getContentPane();
+            c.add(statsLabel, BorderLayout.NORTH);
+            c.add(statsPanel, BorderLayout.CENTER);
+            c.add(okBtn, BorderLayout.SOUTH);
+        }
+
+        private String sumExpenses() {
+            double sum = 0;
+
+            for (int i = 0; i < exp.length(); i++) {
+                Expense ex = exp.getExpense(i);
+                sum = sum + ex.getAmount();
+            }
+            return df.format(sum);
+        }
+
+        private String meanExpenses() {
+            double mean = Double.parseDouble(sumExpenses()) / exp.length();
+            return df.format(mean);
+        }
+
+        private String medianExpenses() {
+            double median;
+
+            getSortedAmounts();
+
+            if (amounts.size() % 2 == 0) {
+                median = (amounts.get(amounts.size() / 2) + amounts.get(amounts.size() / 2 - 1)) / 2;
+            } else {
+                median = amounts.get(amounts.size() / 2);
+            }
+
+            return df.format(median);
+        }
+
+        private void getSortedAmounts() {
+            for (int i = 0; i < exp.length(); i++) {
+                Expense ex = exp.getExpense(i);
+                amounts.add(ex.getAmount());            // COLLECT ALL THE AMOUNT
+            }
+            Collections.sort(amounts);
+        }
+
+        private void setFrame() {
+            frame = new JFrame();
+            frame.setSize(300, 150);
+            frame.setLayout(new BorderLayout(0, 10));
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == okBtn) {
+                frame.dispose();
             }
         }
     }

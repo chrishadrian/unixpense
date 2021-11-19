@@ -72,7 +72,7 @@ public class Expenses implements Writable {
         return jsonArray;
     }
 
-    // EFFECTS: returns an unmodifiable list of thingies in this workroom
+    // EFFECTS: returns an unmodifiable list of expenses in this workroom
     public List<Expense> getExpenses() {
         return Collections.unmodifiableList(expenses);
     }
