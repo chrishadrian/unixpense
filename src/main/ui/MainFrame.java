@@ -159,8 +159,6 @@ public class MainFrame extends JFrame {
 
     private class ButtonsPanel extends JPanel implements ActionListener {
 
-        private EventListenerList listenerList = new EventListenerList();
-
         private JButton createBtn;
         private JButton deleteBtn;
         private JButton loadBtn;
@@ -193,7 +191,7 @@ public class MainFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == createBtn) {
-                new CreateWindow(true);
+                new DateWindow();
             } else if (e.getSource() == deleteBtn) {
                 tablePanel.deleteSelectedRow();
             } else if (e.getSource() == loadBtn) {
@@ -216,17 +214,19 @@ public class MainFrame extends JFrame {
             setFrame();
 
             askDateLabel = new JLabel("Do you want to use current date?");
+            askDateLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
             yesBtn = new JButton("Yes");
             yesBtn.addActionListener(this);
             noBtn = new JButton("No");
             noBtn.addActionListener(this);
+            JPanel yesNoPanel = new JPanel(new FlowLayout());
+            yesNoPanel.add(yesBtn);
+            yesNoPanel.add(noBtn);
 
             Container c = frame.getContentPane();
-
             c.add(askDateLabel, BorderLayout.NORTH);
-            c.add(yesBtn, BorderLayout.CENTER);
-            c.add(noBtn, BorderLayout.CENTER);
+            c.add(yesNoPanel, BorderLayout.SOUTH);
         }
 
         private void setFrame() {
@@ -234,6 +234,7 @@ public class MainFrame extends JFrame {
             frame.setSize(300,100);
             frame.setLayout(new BorderLayout());
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setVisible(true);
         }
 
 
@@ -242,7 +243,6 @@ public class MainFrame extends JFrame {
             if (e.getSource() == yesBtn) {
                 new CreateWindow(true);
                 frame.dispose();
-
             } else if (e.getSource() == noBtn) {
                 new CreateWindow(false);
                 frame.dispose();
