@@ -223,7 +223,7 @@ public class MainFrame extends JFrame {
             statsBtn.addActionListener(this);
             saveBtn.addActionListener(this);
 
-            setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
+            setLayout(new FlowLayout(FlowLayout.CENTER, 30, 0));
 
             add(createBtn);
             add(deleteBtn);
@@ -276,6 +276,7 @@ public class MainFrame extends JFrame {
             frame.setSize(300, 100);
             frame.setLayout(new BorderLayout());
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         }
 
@@ -325,24 +326,19 @@ public class MainFrame extends JFrame {
             frame.setVisible(true);
         }
 
-        private void addProperties() {
-            frame.add(dateLabel);
-            frame.add(dateTF);
-            frame.add(categoryLabel);
-            frame.add(categoryTF);
-            frame.add(amountLabel);
-            frame.add(amountTF);
-            frame.add(commentsLabel);
-            frame.add(commentsTF);
-            frame.add(addBtn);
-            frame.add(resetBtn);
+        private void setFrame() {
+            frame = new JFrame();
+            frame.setSize(450, 300);
+            frame.setLayout(new GridLayout(5, 5));
+            frame.setLocationRelativeTo(null);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         }
 
-        private void setButtons() {
-            addBtn = new JButton("Add");
-            addBtn.addActionListener(this);
-            resetBtn = new JButton("Reset");
-            resetBtn.addActionListener(this);
+        private void setLabel() {
+            dateLabel = new JLabel("Date (YYYY-MM-DD) : ");
+            categoryLabel = new JLabel("Category : ");
+            amountLabel = new JLabel("Amount : ");
+            commentsLabel = new JLabel("Comments : ");
         }
 
         private void setTextField() {
@@ -356,18 +352,24 @@ public class MainFrame extends JFrame {
             commentsTF = new JTextField();
         }
 
-        private void setLabel() {
-            dateLabel = new JLabel("Date: ");
-            categoryLabel = new JLabel("Category: ");
-            amountLabel = new JLabel("Amount: ");
-            commentsLabel = new JLabel("Comments: ");
+        private void setButtons() {
+            addBtn = new JButton("Add");
+            addBtn.addActionListener(this);
+            resetBtn = new JButton("Reset");
+            resetBtn.addActionListener(this);
         }
 
-        private void setFrame() {
-            frame = new JFrame();
-            frame.setSize(450, 300);
-            frame.setLayout(new GridLayout(5, 5));
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        private void addProperties() {
+            frame.add(dateLabel);
+            frame.add(dateTF);
+            frame.add(categoryLabel);
+            frame.add(categoryTF);
+            frame.add(amountLabel);
+            frame.add(amountTF);
+            frame.add(commentsLabel);
+            frame.add(commentsTF);
+            frame.add(addBtn);
+            frame.add(resetBtn);
         }
 
         private void exportExpense() {
@@ -409,7 +411,7 @@ public class MainFrame extends JFrame {
 
         private final JButton okBtn;
 
-        private List<Double> amounts;
+        private final List<Double> amounts;
         private final DecimalFormat df = new DecimalFormat("0.00");
 
         public StatsWindow() {
