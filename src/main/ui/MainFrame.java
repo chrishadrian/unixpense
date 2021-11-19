@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Represents application's main window frame.
+ */
 public class MainFrame extends JFrame {
 
     private final ImagePanel imagePanel;
@@ -25,10 +28,11 @@ public class MainFrame extends JFrame {
     private final ButtonsPanel buttonsPanel;
 
     private Expenses exp;
-    private DefaultTableModel model;
+
 
     private static final String JSON_STORE = "./data/expenses.json";
 
+    // EFFECTS: displays the main frame to the screen
     MainFrame(String title) {
         super(title);
 
@@ -54,6 +58,8 @@ public class MainFrame extends JFrame {
 
     }
 
+    // MODIFIES: this
+    // EFFECTS: loads expenses from JSON_STORE
     private void loadExpenses() {
         JsonReader jsonReader = new JsonReader(JSON_STORE);
         try {
@@ -65,6 +71,7 @@ public class MainFrame extends JFrame {
         }
     }
 
+    // EFFECTS: saves expenses to JSON_STORE
     private void saveExpenses() {
         JsonWriter jsonWriter = new JsonWriter(JSON_STORE);
         try {
@@ -77,12 +84,16 @@ public class MainFrame extends JFrame {
         }
     }
 
+    /**
+     * Represents application's load window frame that is opened at the start of the program.
+     */
     private class LoadWindow implements ActionListener {
 
         private final JButton yesBtn;
         private final JButton noBtn;
         private JFrame frame;
 
+        // EFFECTS: displays load window frame to the screen
         public LoadWindow() {
             setFrame();
 
@@ -102,6 +113,8 @@ public class MainFrame extends JFrame {
             c.add(yesNoPanel, BorderLayout.SOUTH);
         }
 
+
+        // EFFECTS: helper function to set the frame's settings
         private void setFrame() {
             frame = new JFrame();
             frame.setSize(300, 100);
@@ -125,11 +138,15 @@ public class MainFrame extends JFrame {
         }
     }
 
+    /**
+     * Represents application's image panel that is located at the top of the main frame
+     */
     private static class ImagePanel extends JPanel {
         ImageIcon image;
         JLabel titleLabel;
         JLabel iconLabel;
 
+        // EFFECTS: displays image panel to the main frame
         ImagePanel() {
             image = new ImageIcon("./data/expenses.png");
             resizeImage();
@@ -144,6 +161,8 @@ public class MainFrame extends JFrame {
             add(titleLabel);
         }
 
+        // MODIFIES: this
+        // EFFECTS: resize image to smaller scale
         private void resizeImage() {
             Image img = image.getImage();
             Image newImg = img.getScaledInstance(80, 80, Image.SCALE_DEFAULT);
@@ -151,10 +170,15 @@ public class MainFrame extends JFrame {
         }
     }
 
+    /**
+     * Represents application's table panel that is located at the center of the main frame.
+     */
     private class TablePanel extends JPanel {
 
         private JTable expTable;
+        private final DefaultTableModel model;
 
+        // EFFECTS: displays table panel to the main frame
         public TablePanel() {
             super(new GridLayout(1, 0));
 
@@ -167,6 +191,8 @@ public class MainFrame extends JFrame {
             model.setColumnIdentifiers(columnNames);
         }
 
+        // MODIFIES: MainFrame.this and this
+        // EFFECTS: sort all expenses based on date and print to the table
         private void updateExpenses() {
             model.setRowCount(0);
             exp.sortExpensesDate();
@@ -181,6 +207,7 @@ public class MainFrame extends JFrame {
             }
         }
 
+        // EFFECTS: set table settings
         private void setTable(String[] columnNames) {
             Object[][] data = {};
             expTable = new JTable(data, columnNames);
@@ -189,6 +216,8 @@ public class MainFrame extends JFrame {
             add(new JScrollPane(expTable));
         }
 
+        // MODIFIES: this
+        // EFFECTS: remove selected row
         private void deleteSelectedRow() {
             int getSelectedRowForDeletion = expTable.getSelectedRow();
             if (getSelectedRowForDeletion != -1) {
@@ -200,19 +229,33 @@ public class MainFrame extends JFrame {
         }
     }
 
+    /**
+     * Represents application's buttons panel that is located at the bottom of the main frame.
+     */
     private class ButtonsPanel extends JPanel implements ActionListener {
 
-        private final JButton createBtn;
-        private final JButton deleteBtn;
-        private final JButton statsBtn;
-        private final JButton saveBtn;
+        private JButton createBtn;
+        private JButton deleteBtn;
+        private JButton statsBtn;
+        private JButton saveBtn;
 
+        // EFFECTS: displays buttons panel that is located at the bottom of the main frame
         public ButtonsPanel() {
+            setPanel();
+            setButton();
+        }
+
+        // EFFECTS: set ButtonsPanel panel settings
+        private void setPanel() {
             Dimension size = getPreferredSize();
             size.width = 800;
             size.height = 100;
             setSize(size);
+            setLayout(new FlowLayout(FlowLayout.CENTER, 30, 0));
+        }
 
+        // EFFECTS: initialize and add action listener to the buttons and add them to the panel
+        private void setButton() {
             createBtn = new JButton("Create");
             deleteBtn = new JButton("Delete");
             statsBtn = new JButton("Stats");
@@ -222,8 +265,6 @@ public class MainFrame extends JFrame {
             deleteBtn.addActionListener(this);
             statsBtn.addActionListener(this);
             saveBtn.addActionListener(this);
-
-            setLayout(new FlowLayout(FlowLayout.CENTER, 30, 0));
 
             add(createBtn);
             add(deleteBtn);
@@ -245,6 +286,9 @@ public class MainFrame extends JFrame {
         }
     }
 
+    /**
+     * Represents application's date window that will pop up when createBtn is clicked
+     */
     public class DateWindow implements ActionListener {
 
         private JFrame frame;
@@ -252,6 +296,7 @@ public class MainFrame extends JFrame {
         private final JButton yesBtn;
         private final JButton noBtn;
 
+        // EFFECTS: pops up date window frame
         public DateWindow() {
             setFrame();
 
@@ -271,6 +316,7 @@ public class MainFrame extends JFrame {
             c.add(yesNoPanel, BorderLayout.SOUTH);
         }
 
+        // EFFECTS: set frame's settings
         private void setFrame() {
             frame = new JFrame();
             frame.setSize(300, 100);
@@ -292,6 +338,9 @@ public class MainFrame extends JFrame {
         }
     }
 
+    /**
+     * Represents application's create window that will show after either dateWindow's buttons is clicked
+     */
     public class CreateWindow implements ActionListener {
 
         private JFrame frame;
@@ -311,29 +360,28 @@ public class MainFrame extends JFrame {
 
         private final Boolean currentDate;
 
+        // EFFECTS: pops up create window frame
         public CreateWindow(Boolean currentDate) {
             this.currentDate = currentDate;
+
             setFrame();
-
             setLabel();
-
             setTextField();
-
             setButtons();
-
             addProperties();
-
-            frame.setVisible(true);
         }
 
+        // EFFECTS: set create window frame's settings
         private void setFrame() {
             frame = new JFrame();
             frame.setSize(450, 300);
             frame.setLayout(new GridLayout(5, 5));
             frame.setLocationRelativeTo(null);
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setVisible(true);
         }
 
+        // EFFECTS: initialize labels
         private void setLabel() {
             dateLabel = new JLabel("Date (YYYY-MM-DD) : ");
             categoryLabel = new JLabel("Category : ");
@@ -341,6 +389,7 @@ public class MainFrame extends JFrame {
             commentsLabel = new JLabel("Comments : ");
         }
 
+        // EFFECTS: initialize text fields
         private void setTextField() {
             dateTF = new JTextField();
             if (currentDate) {
@@ -352,6 +401,7 @@ public class MainFrame extends JFrame {
             commentsTF = new JTextField();
         }
 
+        // EFFECTS: initialize buttons
         private void setButtons() {
             addBtn = new JButton("Add");
             addBtn.addActionListener(this);
@@ -359,6 +409,7 @@ public class MainFrame extends JFrame {
             resetBtn.addActionListener(this);
         }
 
+        // EFFECTS: add labels, text fields, and buttons to the frame
         private void addProperties() {
             frame.add(dateLabel);
             frame.add(dateTF);
@@ -372,6 +423,8 @@ public class MainFrame extends JFrame {
             frame.add(resetBtn);
         }
 
+        // MODIFIES: MainFrame.this
+        // EFFECTS: set a new expense with text fields' inputs and store it into expenses list
         private void exportExpense() {
             String temp = dateTF.getText();
             int year = Integer.parseInt(temp.substring(0, 4));
@@ -400,6 +453,9 @@ public class MainFrame extends JFrame {
         }
     }
 
+    /**
+     * Represents application's stats window frame that will show after statsBtn is clicked
+     */
     public class StatsWindow implements ActionListener {
 
         private JFrame frame;
@@ -414,6 +470,7 @@ public class MainFrame extends JFrame {
         private final List<Double> amounts;
         private final DecimalFormat df = new DecimalFormat("0.00");
 
+        // EFFECTS: pops up stats window frame
         public StatsWindow() {
             setFrame();
 
@@ -443,6 +500,7 @@ public class MainFrame extends JFrame {
             c.add(okBtn, BorderLayout.SOUTH);
         }
 
+        // EFFECTS: return the sum of amounts in expenses in 2 decimal places
         private String sumExpenses() {
             double sum = 0;
 
@@ -453,11 +511,13 @@ public class MainFrame extends JFrame {
             return df.format(sum);
         }
 
+        // EFFECTS: return the mean of the amounts in expenses in 2 decimal places
         private String meanExpenses() {
             double mean = Double.parseDouble(sumExpenses()) / exp.length();
             return df.format(mean);
         }
 
+        // EFFECTS: return the median of the amounts in expenses in 2 decimal places
         private String medianExpenses() {
             double median;
 
@@ -472,14 +532,17 @@ public class MainFrame extends JFrame {
             return df.format(median);
         }
 
+        // MODIFIES: this
+        // EFFECTS: helper function to get a sorted values of amounts in expenses
         private void getSortedAmounts() {
             for (int i = 0; i < exp.length(); i++) {
                 Expense ex = exp.getExpense(i);
-                amounts.add(ex.getAmount());            // COLLECT ALL THE AMOUNT
+                amounts.add(ex.getAmount());
             }
             Collections.sort(amounts);
         }
 
+        // EFFECTS: set stats window's frame settings
         private void setFrame() {
             frame = new JFrame();
             frame.setSize(300, 150);

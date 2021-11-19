@@ -130,8 +130,8 @@ public class Unixpense {
         System.out.println("\td -> to delete your i-th expense");
         System.out.println("\tb -> to go back to home menu");
 
-        String command = input.next();
-        command.toLowerCase();
+        String command = input.next().toLowerCase();
+
         if (command.equals("b")) {
             System.out.println("Returning to menu...");
         } else {
@@ -200,7 +200,7 @@ public class Unixpense {
 
     }
 
-    // EFFECTS: saves the workroom to file
+    // EFFECTS: saves the expenses to file
     private void saveExpenses() {
         try {
             System.out.println("Saving expenses to " + JSON_STORE + "...");
@@ -213,7 +213,7 @@ public class Unixpense {
     }
 
     // MODIFIES: this
-    // EFFECTS: loads workroom from file
+    // EFFECTS: loads expenses from file
     private void loadExpenses() {
         try {
             exp = jsonReader.read();
