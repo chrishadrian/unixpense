@@ -222,9 +222,9 @@ public class MainFrame extends JFrame {
             int getSelectedRowForDeletion = expTable.getSelectedRow();
             if (getSelectedRowForDeletion != -1) {
                 model.removeRow(getSelectedRowForDeletion);
-                JOptionPane.showMessageDialog(null, "Row Deleted");
+                JOptionPane.showMessageDialog(null, "Row Deleted.");
             } else {
-                JOptionPane.showMessageDialog(null, "Unable To Delete");
+                JOptionPane.showMessageDialog(null, "Unable To Delete.", "Message", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -279,7 +279,12 @@ public class MainFrame extends JFrame {
             } else if (e.getSource() == deleteBtn) {
                 tablePanel.deleteSelectedRow();
             } else if (e.getSource() == statsBtn) {
-                new StatsWindow();
+                try {
+                    new StatsWindow();
+                } catch (IndexOutOfBoundsException er) {
+                    JOptionPane.showMessageDialog(null, "There is no data in the table!",
+                            "ERROR MESSAGE", JOptionPane.ERROR_MESSAGE);
+                }
             } else if (e.getSource() == saveBtn) {
                 saveExpenses();
             }
@@ -432,17 +437,32 @@ public class MainFrame extends JFrame {
             int day = Integer.parseInt(temp.substring(8, 10));
             LocalDate date = LocalDate.of(year, mon, day);
 
-            Expense ex = new Expense(date, categoryTF.getText(),
-                    Double.parseDouble(amountTF.getText()), commentsTF.getText());
-            exp.addExpense(ex);
+            if (categoryTF.getText().length() == 0) {
+                throw new RuntimeException("Do not leave category field blank!");
+            } else {
+                Expense ex = new Expense(date, categoryTF.getText(),
+                        Double.parseDouble(amountTF.getText()), commentsTF.getText());
+                exp.addExpense(ex);
+            }
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == addBtn) {
-                exportExpense();
-                tablePanel.updateExpenses();
-                frame.dispose();
+                try {
+                    exportExpense();
+                    tablePanel.updateExpenses();
+                    frame.dispose();
+                } catch (StringIndexOutOfBoundsException er) {
+                    JOptionPane.showMessageDialog(null, "Date format: YYYY-MM-DD!",
+                            "ERROR MESSAGE", JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException er) {
+                    JOptionPane.showMessageDialog(null, "Please input number in amount field!",
+                            "ERROR MESSAGE", JOptionPane.ERROR_MESSAGE);
+                } catch (RuntimeException er) {
+                    JOptionPane.showMessageDialog(null, er.getMessage(),
+                            "ERROR MESSAGE", JOptionPane.ERROR_MESSAGE);
+                }
 
             } else if (e.getSource() == resetBtn) {
                 dateTF.setText("");
