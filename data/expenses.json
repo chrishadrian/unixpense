@@ -1,5 +1,17 @@
 {"expenses": [
     {
+        "date": "2020-10-10",
+        "amount": "12.0",
+        "comment": "Mask",
+        "category": "Health"
+    },
+    {
+        "date": "2021-11-16",
+        "amount": "11.5",
+        "comment": "IFC",
+        "category": "Personal"
+    },
+    {
         "date": "2021-11-18",
         "amount": "10.0",
         "comment": "STOP SMOKING!",
@@ -10,5 +22,17 @@
         "amount": "23.0",
         "comment": "Rice",
         "category": "Groceries"
+    },
+    {
+        "date": "2021-11-18",
+        "amount": "46.0",
+        "comment": "Protein",
+        "category": "Personal"
+    },
+    {
+        "date": "2021-11-18",
+        "amount": "23.0",
+        "comment": "Shang-chi is BEAST",
+        "category": "Movie"
     }
 ]}
