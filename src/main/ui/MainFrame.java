@@ -19,11 +19,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Represents application's main window frame
+ * Represents application's main window frame.
  */
-public class UnixpenseGUI {
-
-    private JFrame frame;
+public class MainFrame extends JFrame {
 
     private final ImagePanel imagePanel;
     private final TablePanel tablePanel;
@@ -35,11 +33,16 @@ public class UnixpenseGUI {
     private static final String JSON_STORE = "./data/expenses.json";
 
     // EFFECTS: displays the main frame to the screen
-    UnixpenseGUI() {
-        exp = new Expenses();
+    MainFrame(String title) {
+        super(title);
+
         new LoadWindow();
 
-        setFrame();
+        // Initialize expenses
+        exp = new Expenses();
+
+        // Set layout manager
+        setLayout(new BorderLayout());
 
         // Create Swing component
         imagePanel = new ImagePanel();
@@ -47,22 +50,12 @@ public class UnixpenseGUI {
         buttonsPanel = new ButtonsPanel();
 
         // Add Swing components to content pane
-        Container c = frame.getContentPane();
+        Container c = getContentPane();
+
         c.add(imagePanel, BorderLayout.NORTH);
         c.add(tablePanel, BorderLayout.CENTER);
         c.add(buttonsPanel, BorderLayout.SOUTH);
 
-    }
-
-    // Effects : Set frame settings
-    private void setFrame() {
-        frame = new JFrame("Unixpense: University Expense");
-        frame.setSize(600,400);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
-        frame.setVisible(true);
-        frame.setLayout(new BorderLayout());
     }
 
     // MODIFIES: this
@@ -198,7 +191,7 @@ public class UnixpenseGUI {
             model.setColumnIdentifiers(columnNames);
         }
 
-        // MODIFIES: UnixpenseGUI.this and this
+        // MODIFIES: MainFrame.this and this
         // EFFECTS: sort all expenses based on date and print to the table
         private void updateExpenses() {
             model.setRowCount(0);
@@ -229,9 +222,9 @@ public class UnixpenseGUI {
             int getSelectedRowForDeletion = expTable.getSelectedRow();
             if (getSelectedRowForDeletion != -1) {
                 model.removeRow(getSelectedRowForDeletion);
-                JOptionPane.showMessageDialog(null, "Row Deleted.");
+                JOptionPane.showMessageDialog(null, "Row Deleted");
             } else {
-                JOptionPane.showMessageDialog(null, "Unable To Delete.", "Message", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Unable To Delete");
             }
         }
     }
@@ -430,7 +423,7 @@ public class UnixpenseGUI {
             frame.add(resetBtn);
         }
 
-        // MODIFIES: UnixpenseGUI.this
+        // MODIFIES: MainFrame.this
         // EFFECTS: set a new expense with text fields' inputs and store it into expenses list
         private void exportExpense() {
             String temp = dateTF.getText();
@@ -439,32 +432,17 @@ public class UnixpenseGUI {
             int day = Integer.parseInt(temp.substring(8, 10));
             LocalDate date = LocalDate.of(year, mon, day);
 
-            if (categoryTF.getText().length() == 0) {
-                throw new RuntimeException("Do not leave category field blank!");
-            } else {
-                Expense ex = new Expense(date, categoryTF.getText(),
-                        Double.parseDouble(amountTF.getText()), commentsTF.getText());
-                exp.addExpense(ex);
-            }
+            Expense ex = new Expense(date, categoryTF.getText(),
+                    Double.parseDouble(amountTF.getText()), commentsTF.getText());
+            exp.addExpense(ex);
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == addBtn) {
-                try {
-                    exportExpense();
-                    tablePanel.updateExpenses();
-                    frame.dispose();
-                } catch (StringIndexOutOfBoundsException er) {
-                    JOptionPane.showMessageDialog(null, "Date format: YYYY-MM-DD!",
-                            "ERROR MESSAGE", JOptionPane.ERROR_MESSAGE);
-                } catch (NumberFormatException er) {
-                    JOptionPane.showMessageDialog(null, "Please input number in amount field!",
-                            "ERROR MESSAGE", JOptionPane.ERROR_MESSAGE);
-                } catch (RuntimeException er) {
-                    JOptionPane.showMessageDialog(null, er.getMessage(),
-                            "ERROR MESSAGE", JOptionPane.ERROR_MESSAGE);
-                }
+                exportExpense();
+                tablePanel.updateExpenses();
+                frame.dispose();
 
             } else if (e.getSource() == resetBtn) {
                 dateTF.setText("");
