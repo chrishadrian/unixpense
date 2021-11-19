@@ -279,11 +279,11 @@ public class MainFrame extends JFrame {
             } else if (e.getSource() == deleteBtn) {
                 tablePanel.deleteSelectedRow();
             } else if (e.getSource() == statsBtn) {
-                try {
-                    new StatsWindow();
-                } catch (IndexOutOfBoundsException er) {
+                if (exp.length() == 0) {
                     JOptionPane.showMessageDialog(null, "There is no data in the table!",
-                            "ERROR MESSAGE", JOptionPane.ERROR_MESSAGE);
+                                "ERROR MESSAGE", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    new StatsWindow();
                 }
             } else if (e.getSource() == saveBtn) {
                 saveExpenses();
