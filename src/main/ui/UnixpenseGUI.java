@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Represents application's main window frame.
+ * Represents application's main window frame
  */
 public class UnixpenseGUI {
 
