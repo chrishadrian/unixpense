@@ -21,7 +21,9 @@ import java.util.List;
 /**
  * Represents application's main window frame.
  */
-public class MainFrame extends JFrame {
+public class UnixpenseGUI {
+
+    private JFrame frame;
 
     private final ImagePanel imagePanel;
     private final TablePanel tablePanel;
@@ -33,16 +35,11 @@ public class MainFrame extends JFrame {
     private static final String JSON_STORE = "./data/expenses.json";
 
     // EFFECTS: displays the main frame to the screen
-    MainFrame(String title) {
-        super(title);
-
+    UnixpenseGUI() {
+        exp = new Expenses();
         new LoadWindow();
 
-        // Initialize expenses
-        exp = new Expenses();
-
-        // Set layout manager
-        setLayout(new BorderLayout());
+        setFrame();
 
         // Create Swing component
         imagePanel = new ImagePanel();
@@ -50,12 +47,22 @@ public class MainFrame extends JFrame {
         buttonsPanel = new ButtonsPanel();
 
         // Add Swing components to content pane
-        Container c = getContentPane();
-
+        Container c = frame.getContentPane();
         c.add(imagePanel, BorderLayout.NORTH);
         c.add(tablePanel, BorderLayout.CENTER);
         c.add(buttonsPanel, BorderLayout.SOUTH);
 
+    }
+
+    // Effects : Set frame settings
+    private void setFrame() {
+        frame = new JFrame("Unixpense: University Expense");
+        frame.setSize(600,400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
+        frame.setVisible(true);
+        frame.setLayout(new BorderLayout());
     }
 
     // MODIFIES: this
@@ -191,7 +198,7 @@ public class MainFrame extends JFrame {
             model.setColumnIdentifiers(columnNames);
         }
 
-        // MODIFIES: MainFrame.this and this
+        // MODIFIES: UnixpenseGUI.this and this
         // EFFECTS: sort all expenses based on date and print to the table
         private void updateExpenses() {
             model.setRowCount(0);
@@ -224,7 +231,7 @@ public class MainFrame extends JFrame {
                 model.removeRow(getSelectedRowForDeletion);
                 JOptionPane.showMessageDialog(null, "Row Deleted.");
             } else {
-                JOptionPane.showMessageDialog(null, "Unable To Delete.", "Message", 2);
+                JOptionPane.showMessageDialog(null, "Unable To Delete.", "Message", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -423,7 +430,7 @@ public class MainFrame extends JFrame {
             frame.add(resetBtn);
         }
 
-        // MODIFIES: MainFrame.this
+        // MODIFIES: UnixpenseGUI.this
         // EFFECTS: set a new expense with text fields' inputs and store it into expenses list
         private void exportExpense() {
             String temp = dateTF.getText();
