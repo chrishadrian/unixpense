@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Represents application's main window frame.
  */
-public class MainFrame extends JFrame {
+public class UnixpenseGUI extends JFrame {
 
     private final ImagePanel imagePanel;
     private final TablePanel tablePanel;
@@ -33,10 +33,11 @@ public class MainFrame extends JFrame {
     private static final String JSON_STORE = "./data/expenses.json";
 
     // EFFECTS: displays the main frame to the screen
-    MainFrame(String title) {
-        super(title);
+    UnixpenseGUI() {
+        super("Unixpense: University Expense");
 
         new LoadWindow();
+        setFrame();
 
         // Initialize expenses
         exp = new Expenses();
@@ -56,6 +57,14 @@ public class MainFrame extends JFrame {
         c.add(tablePanel, BorderLayout.CENTER);
         c.add(buttonsPanel, BorderLayout.SOUTH);
 
+    }
+
+    private void setFrame() {
+        this.setSize(600,400);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setVisible(true);
     }
 
     // MODIFIES: this
