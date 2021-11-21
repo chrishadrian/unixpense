@@ -365,7 +365,7 @@ public class UnixpenseGUI extends JFrame {
         private JLabel commentsLabel;
 
         private JTextField dateTF;
-        private JTextField categoryTF;
+        private JComboBox categoryCB;
         private JTextField amountTF;
         private JTextField commentsTF;
 
@@ -409,8 +409,9 @@ public class UnixpenseGUI extends JFrame {
             if (currentDate) {
                 dateTF.setText(String.valueOf(LocalDate.now()));
             }
-
-            categoryTF = new JTextField();
+            String[] categoryStrings = { "Groceries", "Food", "Transportation", "Personal", "Hangout", "Health"};
+            categoryCB = new JComboBox(categoryStrings);
+            categoryCB.setSelectedIndex(-1);
             amountTF = new JTextField();
             commentsTF = new JTextField();
         }
@@ -428,7 +429,7 @@ public class UnixpenseGUI extends JFrame {
             frame.add(dateLabel);
             frame.add(dateTF);
             frame.add(categoryLabel);
-            frame.add(categoryTF);
+            frame.add(categoryCB);
             frame.add(amountLabel);
             frame.add(amountTF);
             frame.add(commentsLabel);
@@ -446,10 +447,12 @@ public class UnixpenseGUI extends JFrame {
             int day = Integer.parseInt(temp.substring(8, 10));
             LocalDate date = LocalDate.of(year, mon, day);
 
-            if (categoryTF.getText().length() == 0) {
+
+            if (categoryCB.getSelectedIndex() == -1) {
                 throw new RuntimeException("Do not leave category field blank!");
             } else {
-                Expense ex = new Expense(date, categoryTF.getText(),
+                String categoryString = (String) categoryCB.getSelectedItem();
+                Expense ex = new Expense(date, categoryString,
                         Double.parseDouble(amountTF.getText()), commentsTF.getText());
                 exp.addExpense(ex);
             }
@@ -475,7 +478,7 @@ public class UnixpenseGUI extends JFrame {
 
             } else if (e.getSource() == resetBtn) {
                 dateTF.setText("");
-                categoryTF.setText("");
+                categoryCB.setSelectedIndex(-1);
                 amountTF.setText("");
                 commentsTF.setText("");
             }
