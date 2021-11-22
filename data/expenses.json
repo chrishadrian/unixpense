@@ -9,13 +9,7 @@
         "date": "2021-11-16",
         "amount": "11.5",
         "comment": "IFC",
-        "category": "Personal"
-    },
-    {
-        "date": "2021-11-18",
-        "amount": "10.0",
-        "comment": "STOP SMOKING!",
-        "category": "Nicotine"
+        "category": "Food"
     },
     {
         "date": "2021-11-18",
@@ -28,11 +22,5 @@
         "amount": "46.0",
         "comment": "Protein",
         "category": "Personal"
-    },
-    {
-        "date": "2021-11-18",
-        "amount": "23.0",
-        "comment": "Shang-chi is BEAST",
-        "category": "Movie"
     }
 ]}

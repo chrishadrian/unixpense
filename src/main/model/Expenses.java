@@ -26,7 +26,7 @@ public class Expenses implements Writable {
     // MODIFIES: this
     // EFFECTS: delete the latest expense in the list
     public Expense deleteExpense(int i) {
-        return expenses.remove(i - 1);
+        return expenses.remove(i);
     }
 
     // EFFECTS: return the sum of the expenses amount

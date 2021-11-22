@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents application's main window frame.
@@ -73,7 +74,7 @@ public class UnixpenseGUI extends JFrame {
         JsonReader jsonReader = new JsonReader(JSON_STORE);
         try {
             exp = jsonReader.read();
-            tablePanel.updateExpenses();
+            tablePanel.updateExpenses("");
             System.out.println("Loaded Expenses from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
@@ -202,11 +203,15 @@ public class UnixpenseGUI extends JFrame {
 
         // MODIFIES: MainFrame.this and this
         // EFFECTS: sort all expenses based on date and print to the table
-        private void updateExpenses() {
+        private void updateExpenses(String category) {
             model.setRowCount(0);
             exp.sortExpensesDate();
-            for (int i = 0; i < exp.length(); i++) {
-                Expense ex = exp.getExpense(i);
+
+            List<Expense> printedExp = exp.getExpenses();
+
+            printedExp = getNewExpenses(category, printedExp);
+
+            for (Expense ex : printedExp) {
                 Object[] o = new Object[4];
                 o[0] = ex.getDate();
                 o[1] = ex.getCategory();
@@ -214,6 +219,32 @@ public class UnixpenseGUI extends JFrame {
                 o[3] = ex.getComment();
                 model.addRow(o);
             }
+        }
+
+        // EFFECTS: return a new filtered list of expenses based on category
+        private List<Expense> getNewExpenses(String category, List<Expense> printedExp) {
+            if (category.equals("") || category.equals("Sort by:")) {
+                printedExp = exp.getExpenses();
+            } else if (category.equals("Groceries")) {
+                printedExp = filterExpenses(printedExp, "Groceries");
+            } else if (category.equals("Food")) {
+                printedExp = filterExpenses(printedExp, "Food");
+            } else if (category.equals("Transportation")) {
+                printedExp = filterExpenses(printedExp, "Transportation");
+            } else if (category.equals("Personal")) {
+                printedExp = filterExpenses(printedExp, "Personal");
+            } else if (category.equals("Hangout")) {
+                printedExp = filterExpenses(printedExp, "Hangout");
+            } else if (category.equals("Health")) {
+                printedExp = filterExpenses(printedExp, "Health");
+            }
+            return printedExp;
+        }
+
+        // EFFECTS: return filtered Expenses based on category
+        private List<Expense> filterExpenses(List<Expense> printedExp, String category) {
+            return printedExp.stream().filter((Expense ex) ->
+                    ex.getCategory().equals(category)).collect(Collectors.toList());
         }
 
         // EFFECTS: set table settings
@@ -231,7 +262,8 @@ public class UnixpenseGUI extends JFrame {
             int getSelectedRowForDeletion = expTable.getSelectedRow();
             if (getSelectedRowForDeletion != -1) {
                 model.removeRow(getSelectedRowForDeletion);
-                JOptionPane.showMessageDialog(null, "Row Deleted.");
+                exp.deleteExpense(getSelectedRowForDeletion);
+                JOptionPane.showMessageDialog(null, "Expense Deleted.");
             } else {
                 JOptionPane.showMessageDialog(null, "Unable To Delete.", "Message", JOptionPane.WARNING_MESSAGE);
             }
@@ -248,6 +280,8 @@ public class UnixpenseGUI extends JFrame {
         private JButton statsBtn;
         private JButton saveBtn;
 
+        private JComboBox sortCB;
+
         // EFFECTS: displays buttons panel that is located at the bottom of the main frame
         public ButtonsPanel() {
             setPanel();
@@ -260,24 +294,30 @@ public class UnixpenseGUI extends JFrame {
             size.width = 800;
             size.height = 100;
             setSize(size);
-            setLayout(new FlowLayout(FlowLayout.CENTER, 30, 0));
+            setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
         }
 
         // EFFECTS: initialize and add action listener to the buttons and add them to the panel
         private void setButton() {
             createBtn = new JButton("Create");
             deleteBtn = new JButton("Delete");
-            statsBtn = new JButton("Stats");
+            statsBtn = new JButton("Statistics");
             saveBtn = new JButton("Save");
+
+            String[] categoryStrings = { "Sort by:", "Groceries", "Food", "Transportation", "Personal", "Hangout", "Health"};
+            sortCB = new JComboBox(categoryStrings);
+            sortCB.setSelectedIndex(0);
 
             createBtn.addActionListener(this);
             deleteBtn.addActionListener(this);
             statsBtn.addActionListener(this);
             saveBtn.addActionListener(this);
+            sortCB.addActionListener(this);
 
             add(createBtn);
             add(deleteBtn);
             add(statsBtn);
+            add(sortCB);
             add(saveBtn);
         }
 
@@ -296,6 +336,10 @@ public class UnixpenseGUI extends JFrame {
                 }
             } else if (e.getSource() == saveBtn) {
                 saveExpenses();
+            } else {
+                JComboBox cb = (JComboBox)e.getSource();
+                String category = (String)cb.getSelectedItem();
+                tablePanel.updateExpenses(category);
             }
         }
     }
@@ -463,7 +507,7 @@ public class UnixpenseGUI extends JFrame {
             if (e.getSource() == addBtn) {
                 try {
                     exportExpense();
-                    tablePanel.updateExpenses();
+                    tablePanel.updateExpenses("");
                     frame.dispose();
                 } catch (StringIndexOutOfBoundsException er) {
                     JOptionPane.showMessageDialog(null, "Date format: YYYY-MM-DD!",
