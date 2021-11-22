@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import persistence.Writable;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,13 +21,15 @@ public class Expenses implements Writable {
     // EFFECTS: add an expense to expenses list
     public void addExpense(Expense e) {
         expenses.add(e);
+        EventLog.getInstance().logEvent(new Event("Added " +  e.getCategory() + " expense to expenses list."));
     }
 
     // REQUIRES: list must not be empty
     // MODIFIES: this
     // EFFECTS: delete the latest expense in the list
-    public Expense deleteExpense(int i) {
-        return expenses.remove(i);
+    public void deleteExpense(int i) {
+        EventLog.getInstance().logEvent(new Event("Removed row " + i + 1 + "from expenses list."));
+        expenses.remove(i);
     }
 
     // EFFECTS: return the sum of the expenses amount
@@ -41,7 +44,8 @@ public class Expenses implements Writable {
     // MODIFIES: THIS
     // EFFECTS: Sort the expenses in the list based on date created (from oldest to newest)
     public void sortExpensesDate() {
-        expenses.sort((x, y) -> x.getDate().compareTo(y.getDate()));
+        expenses.sort(Comparator.comparing(Expense::getDate));
+//        expenses.sort((x, y) -> x.getDate().compareTo(y.getDate()));
     }
 
     // REQUIRES: expenses list must not be empty

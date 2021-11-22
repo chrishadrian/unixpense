@@ -187,6 +187,7 @@ public class UnixpenseGUI extends JFrame {
 
         private JTable expTable;
         private final DefaultTableModel model;
+        List<Expense> printedExp;
 
         // EFFECTS: displays table panel to the main frame
         public TablePanel() {
@@ -206,8 +207,6 @@ public class UnixpenseGUI extends JFrame {
         private void updateExpenses(String category) {
             model.setRowCount(0);
             exp.sortExpensesDate();
-
-            List<Expense> printedExp = exp.getExpenses();
 
             printedExp = getNewExpenses(category, printedExp);
 
@@ -304,7 +303,8 @@ public class UnixpenseGUI extends JFrame {
             statsBtn = new JButton("Statistics");
             saveBtn = new JButton("Save");
 
-            String[] categoryStrings = { "Sort by:", "Groceries", "Food", "Transportation", "Personal", "Hangout", "Health"};
+            String[] categoryStrings = { "Sort by:", "Groceries", "Food",
+                    "Transportation", "Personal", "Hangout", "Health"};
             sortCB = new JComboBox(categoryStrings);
             sortCB.setSelectedIndex(0);
 
@@ -328,7 +328,7 @@ public class UnixpenseGUI extends JFrame {
             } else if (e.getSource() == deleteBtn) {
                 tablePanel.deleteSelectedRow();
             } else if (e.getSource() == statsBtn) {
-                if (exp.length() == 0) {
+                if (exp.length() == 0 || tablePanel.printedExp.size() == 0) {
                     JOptionPane.showMessageDialog(null, "There is no data in the table!",
                                 "ERROR MESSAGE", JOptionPane.ERROR_MESSAGE);
                 } else {
@@ -546,6 +546,8 @@ public class UnixpenseGUI extends JFrame {
         private final List<Double> amounts;
         private final DecimalFormat df = new DecimalFormat("0.00");
 
+        private List<Expense> tableExpenses = tablePanel.printedExp;
+
         // EFFECTS: pops up stats window frame
         public StatsWindow() {
             setFrame();
@@ -580,8 +582,7 @@ public class UnixpenseGUI extends JFrame {
         private String sumExpenses() {
             double sum = 0;
 
-            for (int i = 0; i < exp.length(); i++) {
-                Expense ex = exp.getExpense(i);
+            for (Expense ex : tableExpenses) {
                 sum = sum + ex.getAmount();
             }
             return df.format(sum);
@@ -589,7 +590,7 @@ public class UnixpenseGUI extends JFrame {
 
         // EFFECTS: return the mean of the amounts in expenses in 2 decimal places
         private String meanExpenses() {
-            double mean = Double.parseDouble(sumExpenses()) / exp.length();
+            double mean = Double.parseDouble(sumExpenses()) / tableExpenses.size();
             return df.format(mean);
         }
 
@@ -611,8 +612,8 @@ public class UnixpenseGUI extends JFrame {
         // MODIFIES: this
         // EFFECTS: helper function to get a sorted values of amounts in expenses
         private void getSortedAmounts() {
-            for (int i = 0; i < exp.length(); i++) {
-                Expense ex = exp.getExpense(i);
+            amounts.clear();
+            for (Expense ex : tablePanel.printedExp) {
                 amounts.add(ex.getAmount());
             }
             Collections.sort(amounts);
