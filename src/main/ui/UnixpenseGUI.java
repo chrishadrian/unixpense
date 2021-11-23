@@ -1,5 +1,7 @@
 package ui;
 
+import model.Event;
+import model.EventLog;
 import model.Expense;
 import model.Expenses;
 import persistence.JsonReader;
@@ -37,6 +39,8 @@ public class UnixpenseGUI extends JFrame {
     UnixpenseGUI() {
         super("Unixpense: University Expense");
 
+        EventLog.getInstance().logEvent(new Event("Application started."));
+
         new LoadWindow();
         setFrame();
 
@@ -58,6 +62,8 @@ public class UnixpenseGUI extends JFrame {
         c.add(tablePanel, BorderLayout.CENTER);
         c.add(buttonsPanel, BorderLayout.SOUTH);
 
+        printLog();
+
     }
 
     private void setFrame() {
@@ -68,6 +74,23 @@ public class UnixpenseGUI extends JFrame {
         this.setVisible(true);
     }
 
+    private void printLog() {
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                EventLog.getInstance().logEvent(new Event("Application closed."));
+                printLog(EventLog.getInstance());
+                setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            }
+
+            public void printLog(EventLog el) {
+                for (Event next : el) {
+                    System.out.println(next.toString() + "\n");
+                }
+            }
+        });
+    }
+
     // MODIFIES: this
     // EFFECTS: loads expenses from JSON_STORE
     private void loadExpenses() {
@@ -75,7 +98,8 @@ public class UnixpenseGUI extends JFrame {
         try {
             exp = jsonReader.read();
             tablePanel.updateExpenses("");
-            System.out.println("Loaded Expenses from " + JSON_STORE);
+
+            EventLog.getInstance().logEvent(new Event("Loaded Expenses from " + JSON_STORE + "."));
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
@@ -85,7 +109,7 @@ public class UnixpenseGUI extends JFrame {
     private void saveExpenses() {
         JsonWriter jsonWriter = new JsonWriter(JSON_STORE);
         try {
-            System.out.println("Saving expenses to " + JSON_STORE + "...");
+            EventLog.getInstance().logEvent(new Event("Saved Expenses to " + JSON_STORE + "."));
             jsonWriter.open();
             jsonWriter.write(exp);
             jsonWriter.close();
@@ -206,8 +230,11 @@ public class UnixpenseGUI extends JFrame {
         // EFFECTS: sort all expenses based on date and print to the table
         private void updateExpenses(String category) {
             model.setRowCount(0);
-            exp.sortExpensesDate();
+            if (category.equals("") || category.equals("Filter by:")) {
+                exp.sortExpensesDate();
+            }
 
+            printedExp = exp.getExpenses();
             printedExp = getNewExpenses(category, printedExp);
 
             for (Expense ex : printedExp) {
@@ -222,7 +249,7 @@ public class UnixpenseGUI extends JFrame {
 
         // EFFECTS: return a new filtered list of expenses based on category
         private List<Expense> getNewExpenses(String category, List<Expense> printedExp) {
-            if (category.equals("") || category.equals("Sort by:")) {
+            if (category.equals("") || category.equals("Filter by:")) {
                 printedExp = exp.getExpenses();
             } else if (category.equals("Groceries")) {
                 printedExp = filterExpenses(printedExp, "Groceries");
@@ -279,7 +306,7 @@ public class UnixpenseGUI extends JFrame {
         private JButton statsBtn;
         private JButton saveBtn;
 
-        private JComboBox sortCB;
+        private JComboBox filterCB;
 
         // EFFECTS: displays buttons panel that is located at the bottom of the main frame
         public ButtonsPanel() {
@@ -303,21 +330,21 @@ public class UnixpenseGUI extends JFrame {
             statsBtn = new JButton("Statistics");
             saveBtn = new JButton("Save");
 
-            String[] categoryStrings = { "Sort by:", "Groceries", "Food",
+            String[] categoryStrings = { "Filter by:", "Groceries", "Food",
                     "Transportation", "Personal", "Hangout", "Health"};
-            sortCB = new JComboBox(categoryStrings);
-            sortCB.setSelectedIndex(0);
+            filterCB = new JComboBox(categoryStrings);
+            filterCB.setSelectedIndex(0);
 
             createBtn.addActionListener(this);
             deleteBtn.addActionListener(this);
             statsBtn.addActionListener(this);
             saveBtn.addActionListener(this);
-            sortCB.addActionListener(this);
+            filterCB.addActionListener(this);
 
             add(createBtn);
             add(deleteBtn);
             add(statsBtn);
-            add(sortCB);
+            add(filterCB);
             add(saveBtn);
         }
 

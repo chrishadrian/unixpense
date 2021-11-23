@@ -28,7 +28,8 @@ public class Expenses implements Writable {
     // MODIFIES: this
     // EFFECTS: delete the latest expense in the list
     public void deleteExpense(int i) {
-        EventLog.getInstance().logEvent(new Event("Removed row " + i + 1 + "from expenses list."));
+        int row = i + 1;
+        EventLog.getInstance().logEvent(new Event("Removed row " + row + " from expenses list."));
         expenses.remove(i);
     }
 
@@ -46,6 +47,7 @@ public class Expenses implements Writable {
     public void sortExpensesDate() {
         expenses.sort(Comparator.comparing(Expense::getDate));
 //        expenses.sort((x, y) -> x.getDate().compareTo(y.getDate()));
+        EventLog.getInstance().logEvent(new Event("Expenses are sorted based on date."));
     }
 
     // REQUIRES: expenses list must not be empty
