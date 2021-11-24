@@ -32,6 +32,8 @@ public class UnixpenseGUI extends JFrame {
 
     private Expenses exp;
 
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     private static final String JSON_STORE = "./data/expenses.json";
 
@@ -44,8 +46,10 @@ public class UnixpenseGUI extends JFrame {
         new LoadWindow();
         setFrame();
 
-        // Initialize expenses
+        // Initialize expenses and JSON
         exp = new Expenses();
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
 
         // Set layout manager
         setLayout(new BorderLayout());
@@ -94,7 +98,6 @@ public class UnixpenseGUI extends JFrame {
     // MODIFIES: this
     // EFFECTS: loads expenses from JSON_STORE
     private void loadExpenses() {
-        JsonReader jsonReader = new JsonReader(JSON_STORE);
         try {
             exp = jsonReader.read();
             tablePanel.updateExpenses("");
@@ -107,7 +110,6 @@ public class UnixpenseGUI extends JFrame {
 
     // EFFECTS: saves expenses to JSON_STORE
     private void saveExpenses() {
-        JsonWriter jsonWriter = new JsonWriter(JSON_STORE);
         try {
             EventLog.getInstance().logEvent(new Event("Saved Expenses to " + JSON_STORE + "."));
             jsonWriter.open();
