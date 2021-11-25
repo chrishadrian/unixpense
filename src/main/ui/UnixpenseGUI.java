@@ -376,7 +376,7 @@ public class UnixpenseGUI extends JFrame {
     /**
      * Represents application's date window that will pop up when createBtn is clicked
      */
-    public class DateWindow implements ActionListener {
+    private class DateWindow implements ActionListener {
 
         private JFrame frame;
 
@@ -428,7 +428,7 @@ public class UnixpenseGUI extends JFrame {
     /**
      * Represents application's create window that will show after either dateWindow's buttons is clicked
      */
-    public class CreateWindow implements ActionListener {
+    private class CreateWindow implements ActionListener {
 
         private JFrame frame;
 
@@ -561,7 +561,7 @@ public class UnixpenseGUI extends JFrame {
     /**
      * Represents application's stats window frame that will show after statsBtn is clicked
      */
-    public class StatsWindow implements ActionListener {
+    private class StatsWindow implements ActionListener {
 
         private JFrame frame;
 
