@@ -512,7 +512,7 @@ public class UnixpenseGUI extends JFrame {
         }
 
         // MODIFIES: MainFrame.this
-        // EFFECTS: set a new expense with text fields' inputs and store it into expenses list
+        // EFFECTS: set a new expense with text fields' inputs and store it into list of expenses
         private void exportExpense() {
             String temp = dateTF.getText();
             int year = Integer.parseInt(temp.substring(0, 4));

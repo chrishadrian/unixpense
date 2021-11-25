@@ -18,10 +18,10 @@ public class Expenses implements Writable {
     }
 
     // MODIFIES: this
-    // EFFECTS: add an expense to expenses list
+    // EFFECTS: add an expense to list of expenses
     public void addExpense(Expense e) {
         expenses.add(e);
-        EventLog.getInstance().logEvent(new Event("Added " +  e.getCategory() + " expense to expenses list."));
+        EventLog.getInstance().logEvent(new Event("Added " +  e.getCategory() + " expense to list of expenses."));
     }
 
     // REQUIRES: list must not be empty
@@ -29,7 +29,7 @@ public class Expenses implements Writable {
     // EFFECTS: delete the latest expense in the list
     public void deleteExpense(int i) {
         int row = i + 1;
-        EventLog.getInstance().logEvent(new Event("Removed row " + row + " from expenses list."));
+        EventLog.getInstance().logEvent(new Event("Removed row " + row + " from list of expenses."));
         expenses.remove(i);
     }
 
@@ -50,7 +50,7 @@ public class Expenses implements Writable {
         EventLog.getInstance().logEvent(new Event("Expenses are sorted based on date."));
     }
 
-    // REQUIRES: expenses list must not be empty
+    // REQUIRES: list of expenses must not be empty
     // EFFECTS: get the first expense of expenses
     public Expense getExpense(int i) {
         return expenses.get(i);
