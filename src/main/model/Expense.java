@@ -1,11 +1,13 @@
 package model;
 
+
 import org.json.JSONObject;
+import persistence.Writable;
 
 import java.time.LocalDate;
 
 // Represents an expense that has this information: date, category, amount, comment.
-public class Expense {
+public class Expense implements Writable {
     private LocalDate date;
     private String category;
     private double amount;
@@ -34,6 +36,7 @@ public class Expense {
         return comment;
     }
 
+    @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("date", date);

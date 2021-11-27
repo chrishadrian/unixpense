@@ -13,12 +13,6 @@
     },
     {
         "date": "2021-11-18",
-        "amount": "23.0",
-        "comment": "Rice",
-        "category": "Groceries"
-    },
-    {
-        "date": "2021-11-18",
         "amount": "46.0",
         "comment": "Protein",
         "category": "Personal"
@@ -28,11 +22,5 @@
         "amount": "12.0",
         "comment": "UBER",
         "category": "Transportation"
-    },
-    {
-        "date": "2021-11-23",
-        "amount": "11.5",
-        "comment": "IFC",
-        "category": "Food"
     }
 ]}
