@@ -43,7 +43,7 @@ public class UnixpenseGUI extends JFrame {
 
         EventLog.getInstance().logEvent(new Event("Application started."));
 
-        new LoadWindow();
+        new LoadWindow(this);
         setFrame();
 
         // Initialize expenses and JSON
@@ -74,7 +74,7 @@ public class UnixpenseGUI extends JFrame {
         this.setSize(600,400);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
-        this.setResizable(false);
+        this.setResizable(true);
         this.setVisible(true);
     }
 
@@ -97,7 +97,7 @@ public class UnixpenseGUI extends JFrame {
 
     // MODIFIES: this
     // EFFECTS: loads expenses from JSON_STORE
-    private void loadExpenses() {
+    protected void loadExpenses() {
         try {
             exp = jsonReader.read();
             tablePanel.updateExpenses("");
@@ -117,60 +117,6 @@ public class UnixpenseGUI extends JFrame {
             jsonWriter.close();
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file: " + JSON_STORE);
-        }
-    }
-
-    /**
-     * Represents application's load window frame that is opened at the start of the program.
-     */
-    private class LoadWindow implements ActionListener {
-
-        private final JButton yesBtn;
-        private final JButton noBtn;
-        private JFrame frame;
-
-        // EFFECTS: displays load window frame to the screen
-        public LoadWindow() {
-            setFrame();
-
-            JLabel askLoadLabel = new JLabel("Do you want to load previous expenses?");
-            askLoadLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-            yesBtn = new JButton("Yes");
-            yesBtn.addActionListener(this);
-            noBtn = new JButton("No");
-            noBtn.addActionListener(this);
-            JPanel yesNoPanel = new JPanel(new FlowLayout());
-            yesNoPanel.add(yesBtn);
-            yesNoPanel.add(noBtn);
-
-            Container c = frame.getContentPane();
-            c.add(askLoadLabel, BorderLayout.CENTER);
-            c.add(yesNoPanel, BorderLayout.SOUTH);
-        }
-
-
-        // EFFECTS: helper function to set the frame's settings
-        private void setFrame() {
-            frame = new JFrame();
-            frame.setSize(300, 100);
-            frame.setLayout(new BorderLayout());
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frame.setAlwaysOnTop(true);
-            frame.toFront();
-            frame.repaint();
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == yesBtn) {
-                loadExpenses();
-                frame.dispose();
-            } else if (e.getSource() == noBtn) {
-                frame.dispose();
-            }
         }
     }
 

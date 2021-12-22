@@ -1,26 +1,98 @@
 {"expenses": [
     {
-        "date": "2020-10-10",
-        "amount": "12.0",
-        "comment": "Mask",
-        "category": "Health"
-    },
-    {
-        "date": "2021-11-16",
-        "amount": "11.5",
-        "comment": "IFC",
+        "date": "2021-12-01",
+        "amount": "11.0",
+        "comment": "Ayam Geprek Permika",
         "category": "Food"
     },
     {
-        "date": "2021-11-18",
-        "amount": "46.0",
-        "comment": "Protein",
+        "date": "2021-12-01",
+        "amount": "28.0",
+        "comment": "Secret Santa",
+        "category": "Hangout"
+    },
+    {
+        "date": "2021-12-02",
+        "amount": "10.0",
+        "comment": "HOPR",
+        "category": "Transportation"
+    },
+    {
+        "date": "2021-12-02",
+        "amount": "53.71",
+        "comment": "Save On: 5x Pork",
+        "category": "Groceries"
+    },
+    {
+        "date": "2021-12-03",
+        "amount": "16.735",
+        "comment": "Save-On: Rice, Doritos, Eggs",
+        "category": "Groceries"
+    },
+    {
+        "date": "2021-12-03",
+        "amount": "9.33",
+        "comment": "Triple O's",
+        "category": "Food"
+    },
+    {
+        "date": "2021-12-06",
+        "amount": "16.0",
+        "comment": "Burger",
+        "category": "Food"
+    },
+    {
+        "date": "2021-12-07",
+        "amount": "34.79",
+        "comment": "Koodo",
         "category": "Personal"
     },
     {
-        "date": "2021-11-23",
-        "amount": "12.0",
-        "comment": "UBER",
-        "category": "Transportation"
+        "date": "2021-12-08",
+        "amount": "44.65",
+        "comment": "PorkPorkPork",
+        "category": "Groceries"
+    },
+    {
+        "date": "2021-12-09",
+        "amount": "12.13",
+        "comment": "Sesame Rendang",
+        "category": "Food"
+    },
+    {
+        "date": "2021-12-09",
+        "amount": "1.56",
+        "comment": "Grocery Checkout",
+        "category": "Food"
+    },
+    {
+        "date": "2021-12-10",
+        "amount": "14.18",
+        "comment": "Poke",
+        "category": "Food"
+    },
+    {
+        "date": "2021-12-11",
+        "amount": "9.16",
+        "comment": "Sandwich & Coffee",
+        "category": "Food"
+    },
+    {
+        "date": "2021-12-11",
+        "amount": "8.14",
+        "comment": "",
+        "category": "Food"
+    },
+    {
+        "date": "2021-12-12",
+        "amount": "6.9",
+        "comment": "",
+        "category": "Food"
+    },
+    {
+        "date": "2021-12-13",
+        "amount": "6.9",
+        "comment": "Tim Hortons",
+        "category": "Food"
     }
 ]}
