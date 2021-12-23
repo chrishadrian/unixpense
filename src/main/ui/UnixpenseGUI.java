@@ -8,7 +8,6 @@ import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.FileNotFoundException;
@@ -19,7 +18,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Represents application's main window frame.
@@ -100,7 +98,7 @@ public class UnixpenseGUI extends JFrame {
     protected void loadExpenses() {
         try {
             exp = jsonReader.read();
-            tablePanel.updateExpenses("");
+            tablePanel.updateExpenses(exp, "");
 
             EventLog.getInstance().logEvent(new Event("Loaded Expenses from " + JSON_STORE + "."));
         } catch (IOException e) {
@@ -117,130 +115,6 @@ public class UnixpenseGUI extends JFrame {
             jsonWriter.close();
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file: " + JSON_STORE);
-        }
-    }
-
-    /**
-     * Represents application's image panel that is located at the top of the main frame
-     */
-    private static class ImagePanel extends JPanel {
-        ImageIcon image;
-        JLabel titleLabel;
-        JLabel iconLabel;
-
-        // EFFECTS: displays image panel to the main frame
-        ImagePanel() {
-            image = new ImageIcon("./data/expenses.png");
-            resizeImage();
-            iconLabel = new JLabel(image);
-
-            titleLabel = new JLabel();
-            titleLabel.setText("Unixpense");
-            titleLabel.setFont(new Font("Verdana", Font.ITALIC, 25));
-
-            setLayout(new FlowLayout());
-            add(iconLabel);
-            add(titleLabel);
-        }
-
-        // MODIFIES: this
-        // EFFECTS: resize image to smaller scale
-        private void resizeImage() {
-            Image img = image.getImage();
-            Image newImg = img.getScaledInstance(80, 80, Image.SCALE_DEFAULT);
-            image = new ImageIcon(newImg);
-        }
-    }
-
-    /**
-     * Represents application's table panel that is located at the center of the main frame.
-     */
-    private class TablePanel extends JPanel {
-
-        private JTable expTable;
-        private final DefaultTableModel model;
-        List<Expense> printedExp;
-
-        // EFFECTS: displays table panel to the main frame
-        public TablePanel() {
-            super(new GridLayout(1, 0));
-
-            String[] columnNames = {"Date", "Category", "Amount", "Comments"};
-            setTable(columnNames);
-
-            model = new DefaultTableModel();
-            expTable.setModel(model);
-
-            model.setColumnIdentifiers(columnNames);
-        }
-
-        // MODIFIES: MainFrame.this and this
-        // EFFECTS: sort all expenses based on date and print to the table
-        private void updateExpenses(String category) {
-            model.setRowCount(0);
-            if (category.equals("") || category.equals("Filter by:")) {
-                exp.sortExpensesDate();
-            }
-
-            printedExp = exp.getExpenses();
-            printedExp = getNewExpenses(category, printedExp);
-
-            for (Expense ex : printedExp) {
-                Object[] o = new Object[4];
-                o[0] = ex.getDate();
-                o[1] = ex.getCategory();
-                o[2] = ex.getAmount();
-                o[3] = ex.getComment();
-                model.addRow(o);
-            }
-        }
-
-        // EFFECTS: return a new filtered list of expenses based on category
-        private List<Expense> getNewExpenses(String category, List<Expense> printedExp) {
-            if (category.equals("") || category.equals("Filter by:")) {
-                printedExp = exp.getExpenses();
-            } else if (category.equals("Groceries")) {
-                printedExp = filterExpenses(printedExp, "Groceries");
-            } else if (category.equals("Food")) {
-                printedExp = filterExpenses(printedExp, "Food");
-            } else if (category.equals("Transportation")) {
-                printedExp = filterExpenses(printedExp, "Transportation");
-            } else if (category.equals("Personal")) {
-                printedExp = filterExpenses(printedExp, "Personal");
-            } else if (category.equals("Hangout")) {
-                printedExp = filterExpenses(printedExp, "Hangout");
-            } else if (category.equals("Health")) {
-                printedExp = filterExpenses(printedExp, "Health");
-            }
-            return printedExp;
-        }
-
-        // EFFECTS: return filtered Expenses based on category
-        private List<Expense> filterExpenses(List<Expense> printedExp, String category) {
-            return printedExp.stream().filter((Expense ex) ->
-                    ex.getCategory().equals(category)).collect(Collectors.toList());
-        }
-
-        // EFFECTS: set table settings
-        private void setTable(String[] columnNames) {
-            Object[][] data = {};
-            expTable = new JTable(data, columnNames);
-            expTable.setPreferredScrollableViewportSize(new Dimension(500, 70));
-            expTable.setFillsViewportHeight(true);
-            add(new JScrollPane(expTable));
-        }
-
-        // MODIFIES: this
-        // EFFECTS: remove selected row
-        private void deleteSelectedRow() {
-            int getSelectedRowForDeletion = expTable.getSelectedRow();
-            if (getSelectedRowForDeletion != -1) {
-                model.removeRow(getSelectedRowForDeletion);
-                exp.deleteExpense(getSelectedRowForDeletion);
-                JOptionPane.showMessageDialog(null, "Expense Deleted.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Unable To Delete.", "Message", JOptionPane.WARNING_MESSAGE);
-            }
         }
     }
 
@@ -301,7 +175,7 @@ public class UnixpenseGUI extends JFrame {
             if (e.getSource() == createBtn) {
                 new DateWindow();
             } else if (e.getSource() == deleteBtn) {
-                tablePanel.deleteSelectedRow();
+                tablePanel.deleteSelectedRow(exp);
             } else if (e.getSource() == statsBtn) {
                 if (exp.length() == 0 || tablePanel.printedExp.size() == 0) {
                     JOptionPane.showMessageDialog(null, "There is no data in the table!",
@@ -314,7 +188,7 @@ public class UnixpenseGUI extends JFrame {
             } else {
                 JComboBox cb = (JComboBox)e.getSource();
                 String category = (String)cb.getSelectedItem();
-                tablePanel.updateExpenses(category);
+                tablePanel.updateExpenses(exp, category);
             }
         }
     }
@@ -482,7 +356,7 @@ public class UnixpenseGUI extends JFrame {
             if (e.getSource() == addBtn) {
                 try {
                     exportExpense();
-                    tablePanel.updateExpenses("");
+                    tablePanel.updateExpenses(exp, "");
                     frame.dispose();
                 } catch (StringIndexOutOfBoundsException er) {
                     JOptionPane.showMessageDialog(null, "Date format: YYYY-MM-DD!",
