@@ -111,6 +111,7 @@ public class UnixpenseGUI extends JFrame {
         }
     }
 
+    // getter and setter
     public Expenses getExpenses() {
         return exp;
     }
