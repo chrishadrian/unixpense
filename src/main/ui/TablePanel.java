@@ -89,11 +89,15 @@ public class TablePanel extends JPanel {
 
     // MODIFIES: this
     // EFFECTS: remove selected row
-    protected void deleteSelectedRow(Expenses exp) {
+    protected void deleteSelectedRow(UnixpenseGUI main) {
         int getSelectedRowForDeletion = expTable.getSelectedRow();
         if (getSelectedRowForDeletion != -1) {
             model.removeRow(getSelectedRowForDeletion);
+
+            Expenses exp = main.getExpenses();
             exp.deleteExpense(getSelectedRowForDeletion);
+            main.setExpenses(exp);
+
             JOptionPane.showMessageDialog(null, "Expense Deleted.");
         } else {
             JOptionPane.showMessageDialog(null, "Unable To Delete.", "Message", JOptionPane.WARNING_MESSAGE);
