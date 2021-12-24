@@ -30,7 +30,6 @@ public class ButtonsPanel extends JPanel implements ActionListener {
         setButton();
 
         main = gui;
-        exp = gui.getExpenses();
         tablePanel = gui.getTablePanel();
     }
 
@@ -75,11 +74,12 @@ public class ButtonsPanel extends JPanel implements ActionListener {
         } else if (e.getSource() == deleteBtn) {
             tablePanel.deleteSelectedRow(main);
         } else if (e.getSource() == statsBtn) {
+            exp = main.getExpenses();
             if (exp.length() == 0 || tablePanel.printedExp.size() == 0) {
                 JOptionPane.showMessageDialog(null, "There is no data in the table!",
                         "ERROR MESSAGE", JOptionPane.ERROR_MESSAGE);
             } else {
-                new StatsWindow();
+                new StatsWindow(main);
             }
         } else if (e.getSource() == saveBtn) {
             main.saveExpenses();

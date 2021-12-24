@@ -1,7 +1,7 @@
 package ui;
 
-import javafx.scene.control.Tab;
 import model.Expense;
+import model.Expenses;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,14 +30,16 @@ public class StatsWindow implements ActionListener {
     private final List<Double> amounts;
     private final DecimalFormat df = new DecimalFormat("0.00");
 
-    private TablePanel tablePanel =  new TablePanel();
-    private List<Expense> tableExpenses = tablePanel.printedExp;
+    private List<Expense> exp;
+    private TablePanel tablePanel;
 
     // EFFECTS: pops up stats window frame
-    public StatsWindow() {
+    public StatsWindow(UnixpenseGUI main) {
         setFrame();
 
         amounts = new ArrayList<>();
+        tablePanel = main.getTablePanel();
+        exp = tablePanel.getPrintedExp();
 
         statsLabel = new JLabel("Statistics");
         statsLabel.setFont(new Font("Times New Roman", Font.BOLD, 18));
@@ -67,7 +69,7 @@ public class StatsWindow implements ActionListener {
     private String sumExpenses() {
         double sum = 0;
 
-        for (Expense ex : tableExpenses) {
+        for (Expense ex : exp) {
             sum = sum + ex.getAmount();
         }
         return df.format(sum);
@@ -75,7 +77,7 @@ public class StatsWindow implements ActionListener {
 
     // EFFECTS: return the mean of the amounts in expenses in 2 decimal places
     private String meanExpenses() {
-        double mean = Double.parseDouble(sumExpenses()) / tableExpenses.size();
+        double mean = Double.parseDouble(sumExpenses()) / exp.size();
         return df.format(mean);
     }
 

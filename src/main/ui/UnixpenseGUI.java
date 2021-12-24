@@ -90,7 +90,7 @@ public class UnixpenseGUI extends JFrame {
     // EFFECTS: loads expenses from JSON_STORE
     protected void loadExpenses() {
         try {
-            exp = jsonReader.read();
+            this.exp = jsonReader.read();
             tablePanel.updateExpenses(exp, "");
 
             EventLog.getInstance().logEvent(new Event("Loaded Expenses from " + JSON_STORE + "."));

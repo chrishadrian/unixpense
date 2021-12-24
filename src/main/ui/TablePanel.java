@@ -103,4 +103,8 @@ public class TablePanel extends JPanel {
             JOptionPane.showMessageDialog(null, "Unable To Delete.", "Message", JOptionPane.WARNING_MESSAGE);
         }
     }
+
+    public List<Expense> getPrintedExp() {
+        return printedExp;
+    }
 }
