@@ -63,7 +63,7 @@ Application closed.
 If I had more time to modify the project, I'd refactor the GUI class because I used a lot of inner-classes, which makes
 the code's readability a bit ineffective and confusing. Therefore, it would be better if I separate all the inner-classes
 to individual classes in the same package. It would then make things easier, such as debugging or adding new features.
-*I have done mentioned problems by separating inner-classes to individual files*
+*(I have done mentioned problems by separating inner-classes to individual files)*
 
 #
 *CPSC 210 Project: Created by Christopher Wong.*
