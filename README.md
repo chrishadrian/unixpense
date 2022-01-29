@@ -1,10 +1,10 @@
 # Unixpense
 Unixpense or *University Expense* is an application to track all of your expenses throughout days, weeks, months, and
 even years. Just like the name of the application, people can track their expenses from dates, categories, amounts, and
-comments. The available categories are groceries, food, transportation, personal, hangout, and health. Therefore, you
+comments. The available categories are groceries, food, transportation, personal, hangout, and health. This way, you
 can choose what kind of category your expense is, and you can filter them to see a specific expense's category. I made
 this application because as a university student, I really want to reduce my expenses and do more savings. This 
-application therefore will be useful for people, especially university students, who want to keep track of their 
+application will therefore be useful for university students, especially those who want to keep track of their 
 expenses and save more money.
 
 ## User Stories
@@ -60,9 +60,9 @@ Tue Nov 23 14:30:48 PST 2021
 Application closed.
 
 ## Phase 4: Task 3:
-If I had more time to modify the project, I'd refactor the GUI class because I used a lot of inner-classes, which makes
+If I had more time to modify the project, I would refactor the GUI class because I used a lot of inner-classes, which makes
 the code's readability a bit ineffective and confusing. Therefore, it would be better if I separate all the inner-classes
-to individual classes in the same package. It would then make things easier, such as debugging or adding new features.
+to individual classes in the same package. It would then make modifying program easier, such as debugging or adding new features.
 *(I have done mentioned problems by separating inner-classes to individual files)*
 
 #
