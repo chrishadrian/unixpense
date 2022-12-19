@@ -63,7 +63,7 @@ Application closed.
 If I had more time to modify the project, I would refactor the GUI class because I used a lot of inner-classes, which makes
 the code's readability a bit ineffective and confusing. Therefore, it would be better if I separate all the inner-classes
 to individual classes in the same package. It would then make modifying program easier, such as debugging or adding new features.
-*(I have done mentioned problems by separating inner-classes to individual files)*
+*(I have done the problem above by separating inner-classes to individual files)*
 
 ## UML Design Diagram
 ![image](https://user-images.githubusercontent.com/65900990/151684193-e73cdbfe-f9c7-42c2-acd5-fa2b15d5133e.png)

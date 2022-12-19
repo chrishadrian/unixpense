@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,9 +42,10 @@ class JsonReaderTest extends JsonTest {
         try {
             Expenses exp = reader.read();
             List<Expense> expenses = exp.getExpenses();
+            LocalDate expectedDate = LocalDate.of(2021,10,24);
             assertEquals(2, expenses.size());
-            checkExpense(LocalDate.now(), "Groceries", 10, "", expenses.get(0));
-            checkExpense(LocalDate.now(), "Personal", 32.2, "", expenses.get(1));
+            checkExpense(expectedDate, "Groceries", 10, "", expenses.get(0));
+            checkExpense(expectedDate, "Personal", 32.2, "", expenses.get(1));
         } catch (IOException e) {
             fail("Couldn't read from file");
         }

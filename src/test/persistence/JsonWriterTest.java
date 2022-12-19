@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,8 +50,9 @@ class JsonWriterTest extends JsonTest {
     void testWriterGeneralExpenses() {
         try {
             Expenses exp = new Expenses();
-            exp.addExpense(new Expense(LocalDate.now(), "Groceries", 10, ""));
-            exp.addExpense(new Expense(LocalDate.now(), "Personal", 32.2, ""));
+            LocalDate expectedDate = LocalDate.of(2021,10,24);
+            exp.addExpense(new Expense(expectedDate, "Groceries", 10, ""));
+            exp.addExpense(new Expense(expectedDate, "Personal", 32.2, ""));
             JsonWriter writer = new JsonWriter("./data/testWriterGeneralExpenses.json");
             writer.open();
             writer.write(exp);
@@ -59,9 +61,10 @@ class JsonWriterTest extends JsonTest {
             JsonReader reader = new JsonReader("./data/testWriterGeneralExpenses.json");
             exp = reader.read();
             List<Expense> expenses = exp.getExpenses();
+
             assertEquals(2, expenses.size());
-            checkExpense(LocalDate.now(), "Groceries", 10, "", expenses.get(0));
-            checkExpense(LocalDate.now(), "Personal", 32.2, "", expenses.get(1));
+            checkExpense(expectedDate, "Groceries", 10, "", expenses.get(0));
+            checkExpense(expectedDate, "Personal", 32.2, "", expenses.get(1));
 
         } catch (IOException e) {
             fail("Exception should not have been thrown");
