@@ -83,7 +83,8 @@ public class ButtonsPanel extends JPanel implements ActionListener {
             }
         } else if (e.getSource() == saveBtn) {
             main.saveExpenses();
-        } else {
+        } else if (e.getSource() == filterCB) {
+            exp = main.getExpenses();
             JComboBox cb = (JComboBox)e.getSource();
             String category = (String)cb.getSelectedItem();
             tablePanel.updateExpenses(exp, category);
