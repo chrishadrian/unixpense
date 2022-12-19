@@ -68,5 +68,13 @@ to individual classes in the same package. It would then make modifying program 
 ## UML Design Diagram
 ![image](https://user-images.githubusercontent.com/65900990/151684193-e73cdbfe-f9c7-42c2-acd5-fa2b15d5133e.png)
 
+## Application Interface
+![image](https://i.imgur.com/Hj6nQo2.png)
+![image](https://i.imgur.com/ShEiLqS.png)
+![image](https://i.imgur.com/1g3cqBG.png)
+![image](https://i.imgur.com/Mezc1qU.png)
+![image](https://i.imgur.com/LGFHgkK.png)
+![image](https://i.imgur.com/1lDaiJg.png)
+
 #
 *CPSC 210 Project: Created by Christopher Wong.*
